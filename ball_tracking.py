@@ -1,4 +1,6 @@
 from collections import deque
+import sys
+sys.path.append('/usr/local/lib/python2.7/site-packages')
 import numpy as np
 import argparse
 import cv2
@@ -7,7 +9,7 @@ import imutils
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-v", "--video","--/home/zack/Uni/Capstone/ball-tracking/bte.mp4")
-ap.add_argument("-b", "--buffer", type=int, default=64,
+ap.add_argument("-b", "--buffer", type=int, default=15,
 	help="max buffer size")
 args = vars(ap.parse_args())
 
@@ -16,8 +18,11 @@ args = vars(ap.parse_args())
 # list of tracked points
 blueLower = (110,50,50)
 blueUpper = (130,255,255)
-greenLower = (29, 86, 6)
-greenUpper = (64, 255, 255)
+greenLower = (0, 150, 155)
+greenUpper = (248, 255, 255)
+
+# greenLower = (29, 86, 6)
+# greenUpper = (64, 255, 255)
 pts = deque(maxlen=args["buffer"])
 # ([17, 15, 100], [50, 56, 200]),
 # if a video path was not supplied, grab the reference
@@ -43,14 +48,14 @@ while True:
 
 	# resize the frame, blur it, and convert it to the HSV
 	# color space
-	frame = imutils.resize(frame, width=600)
+	# frame = imutils.resize(frame, width=1200)
 	hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
 	# construct a mask for the color "green", then perform
 	# a series of dilations and erosions to remove any small
 	# blobs left in the mask
 	mask = cv2.inRange(hsv, greenLower, greenUpper)
-	mask = cv2.erode(mask, None, iterations=2)
+	mask = cv2.erode(mask, None, iterations=1)
 	mask = cv2.dilate(mask, None, iterations=2)
 
 	# find contours in the mask and initialize the current
