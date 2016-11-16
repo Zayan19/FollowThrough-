@@ -28,7 +28,7 @@ orangeUpper = (10,180,240)
 
 # greenLower = (29, 86, 6)
 # greenUpper = (64, 255, 255)
-pts = deque(maxlen=args["buffer"])
+pts = deque()
 # ([17, 15, 100], [50, 56, 200]),
 # if a video path was not supplied, grab the reference
 # to the webcam
@@ -39,7 +39,7 @@ if False:
 	camera = cv2.VideoCapture(0)
 # otherwise, grab a reference to the video file
 else:
-	camera = cv2.VideoCapture("FT_make.MOV")
+	camera = cv2.VideoCapture("test_videos/FT_make.MOV")
 
 # keep looping
 while True:
