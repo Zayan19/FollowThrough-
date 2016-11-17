@@ -6,6 +6,35 @@ import argparse
 import cv2
 import imutils
 
+
+
+# takes a Direction (tuple list, integer (0-3), int frames)
+# tuple is a list of points that the ball has last travelled
+# 0 = up, 1 = down, 2 = left, 3 = right
+def direction (pts, direction = 0, frames = 3):
+	# The return variable
+	isMovingInDirection = False
+	length = len(pts) -1
+	for i in range (frames, 0, -1):
+		# Up
+		if (direction == 0):
+			if (pts[length - i][1] - pts[length - i +1][1] > 1):
+				isMovingInDirection = isMovingInDirection or True
+		# Down
+		elif (direction == 1):
+			if (pts[length - i][1] - pts[length - i +1][1] < 1):
+				isMovingInDirection = isMovingInDirection or True
+		# Down
+		elif (direction == 2):
+			if (pts[length - i][0] - pts[length - i +1][0] > 1):
+				isMovingInDirection = isMovingInDirection or True
+		# Down
+		elif (direction == 3):
+			if (pts[length - i][0] - pts[length - i +1][0] < 1):
+				isMovingInDirection = isMovingInDirection or True
+	return isMovingInDirection
+
+
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 # ap.add_argument("-v", "--video","--/home/zack/Uni/Capstone/ball-tracking/FT_make.MOV")
@@ -28,7 +57,7 @@ orangeUpper = (10,180,240)
 
 # greenLower = (29, 86, 6)
 # greenUpper = (64, 255, 255)
-pts = deque()
+pts = []
 # ([17, 15, 100], [50, 56, 200]),
 # if a video path was not supplied, grab the reference
 # to the webcam
@@ -53,7 +82,7 @@ while True:
 
 	# resize the frame, blur it, and convert it to the HSV
 	# color space
-	frame = imutils.resize(frame, width=1200)
+	frame = imutils.resize(frame, width=900)
 	hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
 	# construct a mask for the color "green", then perform
@@ -90,9 +119,21 @@ while True:
 				(0, 255, 255), 2)
 			cv2.circle(frame, center, 5, (0, 0, 255), -1)
 
-	# update the points queue
-	pts.appendleft(center)
-
+		# update the points queue
+		pts.append(center)
+	# Determine direction of ball
+	# Confirm there are at least 10 points before trackign starts
+	length = len(pts) - 1
+	if (length >= 10):
+		# Is it moving up?
+		if(direction(pts, 0, 5)):
+			cv2.putText(frame,"U", (50,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
+		if(direction(pts, 1, 5)):
+			cv2.putText(frame,"D", (100,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
+		if(direction(pts, 2, 5)):
+			cv2.putText(frame,"L", (150,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
+		if(direction(pts, 3, 5)):
+			cv2.putText(frame,"R", (200,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
 	# loop over the set of tracked points
 	for i in xrange(1, len(pts)):
 		# if either of the tracked points are None, ignore
@@ -103,6 +144,7 @@ while True:
 		# draw the connecting lines
 		thickness = int(np.sqrt(args["buffer"] / float(i + 1)) * 2.5)
 		cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), thickness)
+
 
 	# show the frame to our screen
 	cv2.imshow("Frame", frame)
