@@ -83,7 +83,7 @@ if False:
 	camera = cv2.VideoCapture(0)
 # otherwise, grab a reference to the video file
 else:
-	camera = cv2.VideoCapture("FT_miss_2.MOV")
+	camera = cv2.VideoCapture("test_videos/FT_miss_2.MOV")
 
 # keep looping
 counter = 100
@@ -168,13 +168,16 @@ while True:
 		# otherwise, compute the thickness of the line and
 		# draw the connecting lines
 		thickness = int(np.sqrt(args["buffer"] / float(i + 1)) * 2.5)
-		cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), thickness)
+		cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), 2)
 
 
 	# show the frame to our screen
 	cv2.imshow("Frame", frame)
 	key = cv2.waitKey(1) & 0xFF
-
+	if cv2.waitKey(80) == ord('p'):
+		while True:
+			if cv2.waitKey(1) == ord('p'):
+				break
 	# if the 'q' key is pressed, stop the loop
 	if key == ord("q"):
 		break

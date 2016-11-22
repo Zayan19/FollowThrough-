@@ -82,7 +82,7 @@ while True:
 
 	# resize the frame, blur it, and convert it to the HSV
 	# color space
-	frame = imutils.resize(frame, width=900)
+	frame = imutils.resize(frame, width=1200)
 	hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
 	# construct a mask for the color "green", then perform
@@ -96,9 +96,9 @@ while True:
 	# find contours in the mask and initialize the current
 	# (x, y) center of the ball
 	cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
-		cv2.CHAIN_APPROX_SIMPLE)[-2]
+		cv2.CHAIN_APPROX_NONE)[-2]
 	center = None
-
+	first = True
 	# only proceed if at least one contour was found
 	if len(cnts) > 0:
 		# find the largest contour in the mask, then use
@@ -107,10 +107,12 @@ while True:
 		c = max(cnts, key=cv2.contourArea)
 		((x, y), radius) = cv2.minEnclosingCircle(c);
         #print out the x and y coordinates
-		print ("This is x",x,"This is y",y)
+		# print ("This is x",x,"This is y",y)
 		M = cv2.moments(c)
 		center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
+
+			# continue
 		# only proceed if the radius meets a minimum size
 		if radius > 40:
 			# draw the circle and centroid on the frame,
@@ -136,20 +138,29 @@ while True:
 			cv2.putText(frame,"R", (200,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
 	# loop over the set of tracked points
 	for i in xrange(1, len(pts)):
+		# check to see if the center of the ball is in a similar position to last time
+		# I would like it to only poll a certain area but I have to look more
+		# into masking first
+		# if (center != None):
+		# 	if (first or abs(center[0] - pts[len(pts) - 1][0]) > 0):
+		# 		# print(abs(center[0] - pts[0][len(pts) - 1]))
+		# 		first = False
+		# 		# break
 		# if either of the tracked points are None, ignore
 		# them
 		if pts[i - 1] is None or pts[i] is None:
 			continue
 		# otherwise, compute the thickness of the line and
 		# draw the connecting lines
+
 		thickness = int(np.sqrt(args["buffer"] / float(i + 1)) * 2.5)
-		cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), thickness)
+		cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), 2)
 
 
 	# show the frame to our screen
 	cv2.imshow("Frame", frame)
 	key = cv2.waitKey(1) & 0xFF
-
+	
 	# if the 'q' key is pressed, stop the loop
 	if key == ord("q"):
 		break
