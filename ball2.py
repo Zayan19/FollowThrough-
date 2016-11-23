@@ -174,7 +174,7 @@ while True:
 	# show the frame to our screen
 	cv2.imshow("Frame", frame)
 	key = cv2.waitKey(1) & 0xFF
-	if cv2.waitKey(80) == ord('p'):
+	if cv2.waitKey(1) == ord('p'):
 		while True:
 			if cv2.waitKey(1) == ord('p'):
 				break
