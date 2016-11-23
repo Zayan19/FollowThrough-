@@ -47,39 +47,25 @@ theta = 0
 foundAngle = False
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
-# ap.add_argument("-v", "--video","--/home/zack/Uni/Capstone/ball-tracking/FT_make_2.MOV")
+ap.add_argument("-v", "--video", nargs="?", type=str)
 ap.add_argument("-b", "--buffer", type=int, default=15,
 	help="max buffer size")
 args = vars(ap.parse_args())
 
-# define the lower and upper boundaries of the "green"
+# define the lower and upper boundaries of the "orange"
 # ball in the HSV color space, then initialize the
 # list of tracked points
-blueLower = (110,50,50)
-blueUpper = (130,255,255)
-# greenLower = (0, 150, 155)
-# greenUpper = (248, 255, 255)
-# orange water bottle cap
-greenLower = (0,86,211)
-greenUpper = (8,255,255)
 orangeLower = (3,100,160)
 orangeUpper = (10,180,240)
 
-# greenLower = (29, 86, 6)
-# greenUpper = (64, 255, 255)
 pts = []
-# ([17, 15, 100], [50, 56, 200]),
-# if a video path was not supplied, grab the reference
-# to the webcam
-# if not args.get("video", False):
 
-#if True then it runs your native camera, otherwise the specified video
-if False:
-	camera = cv2.VideoCapture(0)
-# otherwise, grab a reference to the video file
+# If a video path is supplied via cl arg, run it
+if args.get("video"):
+	camera = cv2.VideoCapture(args.get("video"))
+# Otherwise, use the web cam
 else:
-	camera = cv2.VideoCapture("test_videos/FT_make.MOV")
-	# camera = cv2.VideoCapture("test_videos/FT_miss.MOV")
+	camera = cv2.VideoCapture(0)
 
 #counter to check how many times the points have gone in the down and left direction
 downLeft = 0
@@ -125,7 +111,7 @@ while True:
 		c = max(cnts, key=cv2.contourArea)
 		((x, y), radius) = cv2.minEnclosingCircle(c);
 		# ((x2, y2), radius) = cv2.minEnclosingCircle(c);
-        #print out the x and y coordinates
+
 		M = cv2.moments(c)
 		center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
@@ -139,15 +125,11 @@ while True:
 		# update the points queue
 		pts.append(center)
 
-
-
-
         # Find the max height of the ball
         if (y<maxY):
             maxY=y
             maxX=x
-        # print ("This is maxX and maxY",maxX,maxY)
-        # print ("This is x",x,"This is y",y)
+
         length = len(pts) -1
         if length>=5:
             # Check to make sure it's going down left for a decent amount of time before computing the angle
@@ -173,10 +155,8 @@ while True:
 	# 		cv2.putText(frame,"R", (200,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
 
     #Once the angle is found, print it on screen
-	if (foundAngle == True):
+	if (foundAngle):
 		cv2.putText(frame,"Your angle is "+str(int(theta))+" degrees!",(50,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,0,0),4,0)
-
-
 
 	# loop over the set of tracked points
 	for i in xrange(1, len(pts)):
@@ -190,6 +170,7 @@ while True:
 		cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), 2)
 
 	# show the frame to our screen
+	cv2.moveWindow("Frame", 0, 0)
 	cv2.imshow("Frame", frame)
 	key = cv2.waitKey(1) & 0xFF
 	if key == ord('p'):
