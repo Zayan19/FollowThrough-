@@ -9,6 +9,9 @@ import math
 
 
 
+# takes a Direction (tuple list, integer (0-3), int frames)
+# tuple is a list of points that the ball has last travelled
+# 0 = up, 1 = down, 2 = left, 3 = right
 def direction (pts, direction = 0, frames = 3):
 	# The return variable
 	isMovingInDirection = False
@@ -32,22 +35,24 @@ def direction (pts, direction = 0, frames = 3):
 				isMovingInDirection = isMovingInDirection or True
 	return isMovingInDirection
 
+
+
+
 def angle(cx, cy, ex, ey) :
    dy = ey - cy;
    dx = ex - cx;
-   global theta
    theta = math.atan2(dy, dx);
    # // range (-PI, PI]
-   theta *= (180 / math.pi);
-   theta = abs(theta)
-   # theta=180-theta
-   return theta
+   theta *= 180 / math.pi;
+   # // rads to degs, range (-180, 180]
+  # //if (theta < 0) theta = 360 + theta; // range [0, 360)
+   cv2.putText(frame,str(theta), (50,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
+   print ("This is the angle: ", theta);
 
-theta = 0
-foundAngle = False
+
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
-# ap.add_argument("-v", "--video","--/home/zack/Uni/Capstone/ball-tracking/FT_make_2.MOV")
+# ap.add_argument("-v", "--video","--/home/zack/Uni/Capstone/ball-tracking/FT_make.MOV")
 ap.add_argument("-b", "--buffer", type=int, default=15,
 	help="max buffer size")
 args = vars(ap.parse_args())
@@ -78,17 +83,12 @@ if False:
 	camera = cv2.VideoCapture(0)
 # otherwise, grab a reference to the video file
 else:
-	camera = cv2.VideoCapture("test_videos/FT_make.MOV")
-	# camera = cv2.VideoCapture("test_videos/FT_miss.MOV")
-
-#counter to check how many times the points have gone in the down and left direction
-downLeft = 0
-
-#initialize maxX,maxY values which represent the apex of the ball arc
-maxX=800
-maxY=800
+	camera = cv2.VideoCapture("test_videos/FT_miss_2.MOV")
 
 # keep looping
+counter = 100
+x2 = 0
+y2 = 0
 while True:
 	# grab the current frame
 	(grabbed, frame) = camera.read()
@@ -124,8 +124,8 @@ while True:
 		# centroid
 		c = max(cnts, key=cv2.contourArea)
 		((x, y), radius) = cv2.minEnclosingCircle(c);
-		# ((x2, y2), radius) = cv2.minEnclosingCircle(c);
         #print out the x and y coordinates
+		print ("This is x",x,"This is y",y)
 		M = cv2.moments(c)
 		center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
@@ -138,45 +138,26 @@ while True:
 			cv2.circle(frame, center, 5, (0, 0, 255), -1)
 		# update the points queue
 		pts.append(center)
-
-
-
-
-        # Find the max height of the ball
-        if (y<maxY):
-            maxY=y
-            maxX=x
-        # print ("This is maxX and maxY",maxX,maxY)
-        # print ("This is x",x,"This is y",y)
-        length = len(pts) -1
-        if length>=5:
-            # Check to make sure it's going down left for a decent amount of time before computing the angle
-            if   direction(pts,1,5) and (direction(pts,2,5)) and not (direction(pts,0,5)) and not (direction(pts,3,5)):
-                downLeft = downLeft+1
-        if (length >=5):
-            if downLeft >=5 and direction(pts,1,5) and (direction(pts,2,5)) and not (direction(pts,0,5)) and not (direction(pts,3,5)):
-                angle(x,y,maxX,maxY)
-                foundAngle = True
+        if  counter<0:
+            ((x2, y2), radius) = cv2.minEnclosingCircle(c);
+            counter= 1000
+        counter = counter -1
+        angle(x,y,x2,y2)
 
 	# Determine direction of ball
 	# Confirm there are at least 10 points before trackign starts
+	length = len(pts) - 1
+	if (length >= 10):
+		# Is it moving up?
 
-	# length = len(pts) - 1
-	# if (length >= 10):
-	# 	if(direction(pts, 0, 5)):
-	# 		cv2.putText(frame,"U", (50,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
-	# 	if(direction(pts, 1, 5)):
-	# 		cv2.putText(frame,"D", (100,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
-	# 	if(direction(pts, 2, 5)):
-	# 		cv2.putText(frame,"L", (150,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
-	# 	if(direction(pts, 3, 5)):
-	# 		cv2.putText(frame,"R", (200,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
-
-    #Once the angle is found, print it on screen
-	if (foundAngle == True):
-		cv2.putText(frame,"Your angle is "+str(int(theta))+" degrees!",(50,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,0,0),4,0)
-
-
+		if(direction(pts, 0, 5)):
+			cv2.putText(frame,"U", (50,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
+		if(direction(pts, 1, 5)):
+			cv2.putText(frame,"D", (100,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
+		if(direction(pts, 2, 5)):
+			cv2.putText(frame,"L", (150,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
+		if(direction(pts, 3, 5)):
+			cv2.putText(frame,"R", (200,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
 
 	# loop over the set of tracked points
 	for i in xrange(1, len(pts)):
@@ -188,6 +169,7 @@ while True:
 		# draw the connecting lines
 		# thickness = int(np.sqrt(args["buffer"] / float(i + 1)) * 2.5)
 		cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), 2)
+
 
 	# show the frame to our screen
 	cv2.imshow("Frame", frame)
