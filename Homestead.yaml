@@ -1,0 +1,37 @@
+---
+ip: "192.168.10.10"
+memory: 2048
+cpus: 1
+provider: virtualbox
+
+authorize: ~/.ssh/id_rsa.pub
+
+keys:
+    - ~/.ssh/id_rsa
+
+folders:
+      # Folder where FollowThroughWeb lies
+    - map: /home/philip/school/4zp6/web/FollowThrough-/FollowThroughWeb
+      # Folder on virtual machine containing what's on the local machine
+      to: /home/vagrant/FollowThroughWeb
+
+sites:
+    # Type this in the browser after runing vagrant up to see the site
+    - map: followthrough.app
+      to: /home/vagrant/FollowThroughWeb/public
+
+databases:
+    - homestead
+
+# blackfire:
+#     - id: foo
+#       token: bar
+#       client-id: foo
+#       client-token: bar
+
+# ports:
+#     - send: 50000
+#       to: 5000
+#     - send: 7777
+#       to: 777
+#       protocol: udp
