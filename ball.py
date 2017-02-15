@@ -44,6 +44,8 @@ def angle(cx, cy, ex, ey) :
    return theta
 
 theta = 0
+entryAngle = 0
+exitAngle = 0
 foundAngle = False
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -69,10 +71,14 @@ else:
 
 #counter to check how many times the points have gone in the down and left direction
 downLeft = 0
+upLeft =0
+# upleftX;
+# upleftY;
 
 #initialize maxX,maxY values which represent the apex of the ball arc
 maxX=800
 maxY=800
+
 
 # keep looping
 while True:
@@ -137,12 +143,26 @@ while True:
                 downLeft = downLeft+1
         if (length >=5):
             if downLeft >=5 and direction(pts,1,5) and (direction(pts,2,5)) and not (direction(pts,0,5)) and not (direction(pts,3,5)):
-                angle(x,y,maxX,maxY)
+                entryAngle = angle(x,y,maxX,maxY)
                 foundAngle = True
+
+        print ("This is x",x,"This is y",y)
+        length = len(pts) -1
+        if length>=5:
+            # Check to make sure it's going up left for a decent amount of time before computing the angle
+            if  not direction(pts,1,5) and not (direction(pts,3,5)) and (direction(pts,0,5)) and (direction(pts,2,5)):
+                upLeft = upLeft+1
+        if (length >=5):
+            if upLeft >=5 and not direction(pts,1,5) and not (direction(pts,3,5)) and (direction(pts,0,5)) and (direction(pts,2,5)):
+                print (x,y);
+                exitAngle = angle(x,y,585,298)
+                foundAngle = True
+
+
+
 
 	# Determine direction of ball
 	# Confirm there are at least 10 points before trackign starts
-
 	# length = len(pts) - 1
 	# if (length >= 10):
 	# 	if(direction(pts, 0, 5)):
@@ -156,7 +176,9 @@ while True:
 
     #Once the angle is found, print it on screen
 	if (foundAngle):
-		cv2.putText(frame,"Your angle is "+str(int(theta))+" degrees!",(50,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,0,0),4,0)
+		cv2.putText(frame,"Entry angle is "+str(int(entryAngle))+" degrees!",(50,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,0,0),4,0)
+		cv2.putText(frame,"Exit angle is "+str(int(exitAngle))+" degrees!",(50,130),cv2.FONT_HERSHEY_SIMPLEX,2,(255,0,0),4,0)
+		cv2.putText(frame,"Max height was "+str(int(200-maxY))+" units!",(50,180),cv2.FONT_HERSHEY_SIMPLEX,2,(255,0,0),4,0)
 
 	# loop over the set of tracked points
 	for i in xrange(1, len(pts)):
