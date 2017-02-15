@@ -10,27 +10,27 @@ import math
 
 
 def direction (pts, direction = 0, frames = 3):
-	# The return variable
-	isMovingInDirection = False
-	length = len(pts) -1
-	for i in range (frames, 0, -1):
-		# Up
-		if (direction == 0):
-			if (pts[length - i][1] - pts[length - i +1][1] > 1):
-				isMovingInDirection = isMovingInDirection or True
-		# Down
-		elif (direction == 1):
-			if (pts[length - i][1] - pts[length - i +1][1] < 1):
-				isMovingInDirection = isMovingInDirection or True
-		# Down
-		elif (direction == 2):
-			if (pts[length - i][0] - pts[length - i +1][0] > 1):
-				isMovingInDirection = isMovingInDirection or True
-		# Down
-		elif (direction == 3):
-			if (pts[length - i][0] - pts[length - i +1][0] < 1):
-				isMovingInDirection = isMovingInDirection or True
-	return isMovingInDirection
+    # The return variable
+    isMovingInDirection = False
+    length = len(pts) -1
+    for i in range (frames, 0, -1):
+        # Up
+        if (direction == 0):
+            if (pts[length - i][1] - pts[length - i +1][1] > 1):
+                isMovingInDirection = isMovingInDirection or True
+        # Down
+        elif (direction == 1):
+            if (pts[length - i][1] - pts[length - i +1][1] < 1):
+                isMovingInDirection = isMovingInDirection or True
+        # Down
+        elif (direction == 2):
+            if (pts[length - i][0] - pts[length - i +1][0] > 1):
+                isMovingInDirection = isMovingInDirection or True
+        # Down
+        elif (direction == 3):
+            if (pts[length - i][0] - pts[length - i +1][0] < 1):
+                isMovingInDirection = isMovingInDirection or True
+    return isMovingInDirection
 
 def angle(cx, cy, ex, ey) :
    dy = ey - cy;
@@ -51,7 +51,7 @@ foundAngle = False
 ap = argparse.ArgumentParser()
 ap.add_argument("-v", "--video", nargs="?", type=str)
 ap.add_argument("-b", "--buffer", type=int, default=15,
-	help="max buffer size")
+    help="max buffer size")
 args = vars(ap.parse_args())
 
 # define the lower and upper boundaries of the "orange"
@@ -64,10 +64,10 @@ pts = []
 
 # If a video path is supplied via cl arg, run it
 if args.get("video"):
-	camera = cv2.VideoCapture(args.get("video"))
+    camera = cv2.VideoCapture(args.get("video"))
 # Otherwise, use the web cam
 else:
-	camera = cv2.VideoCapture(0)
+    camera = cv2.VideoCapture(0)
 
 #counter to check how many times the points have gone in the down and left direction
 downLeft = 0
@@ -82,54 +82,54 @@ maxY=800
 
 # keep looping
 while True:
-	# grab the current frame
-	(grabbed, frame) = camera.read()
+    # grab the current frame
+    (grabbed, frame) = camera.read()
 
-	# if we are viewing a video and we did not grab a frame,
-	# then we have reached the end of the video
-	if args.get("video") and not grabbed:
-		break
+    # if we are viewing a video and we did not grab a frame,
+    # then we have reached the end of the video
+    if args.get("video") and not grabbed:
+        break
 
-	# resize the frame, blur it, and convert it to the HSV
-	# color space
-	frame = imutils.resize(frame, width=900)
-	hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    # resize the frame, blur it, and convert it to the HSV
+    # color space
+    frame = imutils.resize(frame, width=900)
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-	# construct a mask for the color "green", then perform
-	# a series of dilations and erosions to remove any small
-	# blobs left in the mask
-	mask = cv2.inRange(hsv, orangeLower, orangeUpper)
-	mask = cv2.erode(mask, None, iterations=2)
+    # construct a mask for the color "green", then perform
+    # a series of dilations and erosions to remove any small
+    # blobs left in the mask
+    mask = cv2.inRange(hsv, orangeLower, orangeUpper)
+    mask = cv2.erode(mask, None, iterations=2)
 
-	mask = cv2.dilate(mask, None, iterations=2)
+    mask = cv2.dilate(mask, None, iterations=2)
 
-	# find contours in the mask and initialize the current
-	# (x, y) center of the ball
-	cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
-		cv2.CHAIN_APPROX_SIMPLE)[-2]
-	center = None
+    # find contours in the mask and initialize the current
+    # (x, y) center of the ball
+    cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
+        cv2.CHAIN_APPROX_SIMPLE)[-2]
+    center = None
 
-	# only proceed if at least one contour was found
-	if len(cnts) > 0:
-		# find the largest contour in the mask, then use
-		# it to compute the minimum enclosing circle and
-		# centroid
-		c = max(cnts, key=cv2.contourArea)
-		((x, y), radius) = cv2.minEnclosingCircle(c);
-		# ((x2, y2), radius) = cv2.minEnclosingCircle(c);
+    # only proceed if at least one contour was found
+    if len(cnts) > 0:
+        # find the largest contour in the mask, then use
+        # it to compute the minimum enclosing circle and
+        # centroid
+        c = max(cnts, key=cv2.contourArea)
+        ((x, y), radius) = cv2.minEnclosingCircle(c);
+        # ((x2, y2), radius) = cv2.minEnclosingCircle(c);
 
-		M = cv2.moments(c)
-		center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+        M = cv2.moments(c)
+        center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
-		# only proceed if the radius meets a minimum size
-		if radius > 40:
-			# draw the circle and centroid on the frame,
-			# then update the list of tracked points
-			cv2.circle(frame, (int(x), int(y)), int(radius),
-				(0, 255, 255), 2)
-			cv2.circle(frame, center, 5, (0, 0, 255), -1)
-		# update the points queue
-		pts.append(center)
+        # only proceed if the radius meets a minimum size
+        if radius > 40:
+            # draw the circle and centroid on the frame,
+            # then update the list of tracked points
+            cv2.circle(frame, (int(x), int(y)), int(radius),
+                (0, 255, 255), 2)
+            cv2.circle(frame, center, 5, (0, 0, 255), -1)
+        # update the points queue
+        pts.append(center)
 
         # Find the max height of the ball
         if (y<maxY):
@@ -161,47 +161,47 @@ while True:
 
 
 
-	# Determine direction of ball
-	# Confirm there are at least 10 points before trackign starts
-	# length = len(pts) - 1
-	# if (length >= 10):
-	# 	if(direction(pts, 0, 5)):
-	# 		cv2.putText(frame,"U", (50,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
-	# 	if(direction(pts, 1, 5)):
-	# 		cv2.putText(frame,"D", (100,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
-	# 	if(direction(pts, 2, 5)):
-	# 		cv2.putText(frame,"L", (150,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
-	# 	if(direction(pts, 3, 5)):
-	# 		cv2.putText(frame,"R", (200,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
+    # Determine direction of ball
+    # Confirm there are at least 10 points before trackign starts
+    # length = len(pts) - 1
+    # if (length >= 10):
+    #   if(direction(pts, 0, 5)):
+    #       cv2.putText(frame,"U", (50,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
+    #   if(direction(pts, 1, 5)):
+    #       cv2.putText(frame,"D", (100,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
+    #   if(direction(pts, 2, 5)):
+    #       cv2.putText(frame,"L", (150,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
+    #   if(direction(pts, 3, 5)):
+    #       cv2.putText(frame,"R", (200,50), cv2.FONT_HERSHEY_SIMPLEX, 2, 0)
 
     #Once the angle is found, print it on screen
-	if (foundAngle):
-		cv2.putText(frame,"Entry angle is "+str(int(entryAngle))+" degrees!",(50,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,0,0),4,0)
-		cv2.putText(frame,"Exit angle is "+str(int(exitAngle))+" degrees!",(50,130),cv2.FONT_HERSHEY_SIMPLEX,2,(255,0,0),4,0)
-		cv2.putText(frame,"Max height was "+str(int(200-maxY))+" units!",(50,180),cv2.FONT_HERSHEY_SIMPLEX,2,(255,0,0),4,0)
+    if (foundAngle):
+        cv2.putText(frame,"Entry angle is "+str(int(entryAngle))+" degrees!",(50,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,0,0),4,0)
+        cv2.putText(frame,"Exit angle is "+str(int(exitAngle))+" degrees!",(50,130),cv2.FONT_HERSHEY_SIMPLEX,2,(255,0,0),4,0)
+        cv2.putText(frame,"Max height was "+str(round(((250-maxY)/40),2))+" M!",(50,180),cv2.FONT_HERSHEY_SIMPLEX,2,(255,0,0),4,0)
 
-	# loop over the set of tracked points
-	for i in xrange(1, len(pts)):
-		# if either of the tracked points are None, ignore
-		# them
-		if pts[i - 1] is None or pts[i] is None:
-			continue
-		# otherwise, compute the thickness of the line and
-		# draw the connecting lines
-		# thickness = int(np.sqrt(args["buffer"] / float(i + 1)) * 2.5)
-		cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), 2)
+    # loop over the set of tracked points
+    for i in xrange(1, len(pts)):
+        # if either of the tracked points are None, ignore
+        # them
+        if pts[i - 1] is None or pts[i] is None:
+            continue
+        # otherwise, compute the thickness of the line and
+        # draw the connecting lines
+        # thickness = int(np.sqrt(args["buffer"] / float(i + 1)) * 2.5)
+        cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), 2)
 
-	# show the frame to our screen
-	cv2.moveWindow("Frame", 0, 0)
-	cv2.imshow("Frame", frame)
-	key = cv2.waitKey(1) & 0xFF
-	if key == ord('p'):
-		while True:
-			if cv2.waitKey(1) == ord('p'):
-				break
-	# if the 'q' key is pressed, stop the loop
-	if key == ord("q"):
-		break
+    # show the frame to our screen
+    cv2.moveWindow("Frame", 0, 0)
+    cv2.imshow("Frame", frame)
+    key = cv2.waitKey(1) & 0xFF
+    if key == ord('p'):
+        while True:
+            if cv2.waitKey(1) == ord('p'):
+                break
+    # if the 'q' key is pressed, stop the loop
+    if key == ord("q"):
+        break
 
 # cleanup the camera and close any open windows
 camera.release()
