@@ -1,9 +1,35 @@
-
 // Fonts
-@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
-
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,600");
 // Variables
 @import "variables";
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+.mdl-menu__item > a {
+    color: #636b6f;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.brand {
+    color: white;
+    text-decoration: none;
+
+    &:hover {
+        color: white;
+        text-decoration: none;
+    }
+}
+
+.avgStats {
+    margin-top: 15%;
+
+    & > p {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
+}
