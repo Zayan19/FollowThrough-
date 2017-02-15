@@ -11,6 +11,7 @@ import math
 
 def direction (pts, direction = 0, frames = 3):
     # The return variable
+    valueList = []
     isMovingInDirection = False
     length = len(pts) -1
     for i in range (frames, 0, -1):
@@ -206,8 +207,12 @@ def runVideo():
         if key == ord("q"):
             break
 
+
     # cleanup the camera and close any open windows
     camera.release()
     cv2.destroyAllWindows()
+    valueList = [entryAngle,exitAngle,maxY]
+    return valueList;
+
 
 runVideo()
