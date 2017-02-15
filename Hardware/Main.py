@@ -32,17 +32,30 @@ def exit():
     print "[STATUS] Exit"
     GPIO.cleanup()
 
+def internet_on():
+    try:
+        urllib2.urlopen('http://216.58.192.142', timeout=1)
+        return True
+    except urllib2.URLError as err:
+        return False
 
-
+interneton = False;
 def main():
     init()
 
     counter = 0
     while True:
+
         # only check the internet every once in a while
         if (counter % 10000 == 0):
-            internet_on()
+            print "[PROCESS] Begin check internet."
+            interneton = internet_on()
+
+
+
         loop()
+
+
         counter = counter + 1
 
     exit()
