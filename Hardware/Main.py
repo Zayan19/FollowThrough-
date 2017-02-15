@@ -3,27 +3,31 @@ from Sensor import Sensor
 import time
 import urllib2
 
-sensor_ultra = 0
+sh = 0
 
 def init ():
     print "[STATUS] Init"
-    global sensor_ultra
+    global sh
 
     # Set the GPIO mode
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BCM)
 
     #Initialize the sensor to pins 23 and 24
-    sensor_ultra = Sensor(20, 26)
+    sh = SensorHandler(Sensor(20, 26))
 
+recent_values = []
 # Called every time the program executes the main loop
 def loop():
-    global sensor_ultra
+    global sh
 
-    # Determine if a shot has been made
-    if sensor_ultra.measure_distance() <= 15:
-        print "Shot Make"
-        # print Shot()
+    # update the sensor handler
+    sh.update()
+
+    if (sh.wasShotMade()):
+        print "[EVENT] Shot made"
+        sh.shoot()
+        time.sleep(0.25)
 
     #Slow the loop
     time.sleep(0.01)
@@ -50,6 +54,7 @@ def main():
         if (counter % 10000 == 0):
             print "[PROCESS] Begin check internet."
             interneton = internet_on()
+
 
 
 
