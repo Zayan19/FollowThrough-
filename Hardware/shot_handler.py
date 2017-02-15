@@ -27,9 +27,14 @@ class shot_handler:
             params = line.split(",")
 
             shots_queue.append((params[0],params[1]))
+        f.close()
 
-    def save_to_file():
-
+    def save_to_file(self, filename="/etc/shots.csv"):
+        f = open(shotfile,'w')
+        # load all of the shots into the shot_queue
+        for shot in shot_queue:
+            f.write(shot.getUserId, "," , shot.getTime());
+        f.close()
 
 
 # Define what a shot is
@@ -42,3 +47,8 @@ class Shot:
             self.time = time
 
         self.user_id = user_id
+
+    def getTime(self):
+        return self.time
+    def getUserId(self):
+        return self.user_id
