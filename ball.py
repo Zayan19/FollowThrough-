@@ -1,7 +1,7 @@
 from collections import deque
 import sys
 sys.path.append('/usr/local/lib/python2.7/site-packages')
-import numpy as np
+# import numpy as np
 import argparse
 import cv2
 import imutils
@@ -176,9 +176,9 @@ while True:
 
     #Once the angle is found, print it on screen
     if (foundAngle):
-        cv2.putText(frame,"Entry angle is "+str(int(entryAngle))+" degrees!",(50,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,0,0),4,0)
-        cv2.putText(frame,"Exit angle is "+str(int(exitAngle))+" degrees!",(50,130),cv2.FONT_HERSHEY_SIMPLEX,2,(255,0,0),4,0)
-        cv2.putText(frame,"Max height was "+str(round(((250-maxY)/40),2))+" M!",(50,180),cv2.FONT_HERSHEY_SIMPLEX,2,(255,0,0),4,0)
+        cv2.putText(frame,"Entry angle is "+str(int(entryAngle))+" degrees!",(10,25),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
+        cv2.putText(frame,"Exit angle is "+str(int(exitAngle))+" degrees!",(10,75),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
+        cv2.putText(frame,"Max height was "+str(round(((250-maxY)/40),2))+" M!",(10,125),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
 
     # loop over the set of tracked points
     for i in xrange(1, len(pts)):
