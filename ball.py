@@ -208,10 +208,17 @@ def runVideo():
             break
 
 
+
+
     # cleanup the camera and close any open windows
     camera.release()
     cv2.destroyAllWindows()
+    maxY = round((250-maxY)/40,2)
+
     valueList = [entryAngle,exitAngle,maxY]
+    print (valueList[0])
+    print (valueList[1])
+    print (valueList[2])
     return valueList;
 
 
