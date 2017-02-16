@@ -1,40 +1,67 @@
 import RPi.GPIO as GPIO
 from Sensor import Sensor
-import time
+from SensorHandler import SensorHandler
+from ShotHandler import ShotHandler
 
-# ODO: Hold script when wifi is disconnected or hold post requests unil after
-sensor_ultra = 0
+import time
+import urllib2
+
 
 def init ():
-    print "[Status] Init"
-    global sensor_ultra
+    print "[STATUS] Init"
+    global sensor_handler, shot_handler
+
     # Set the GPIO mode
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BCM)
     #Initialize the sensor to pins 23 and 24
-    # TRIG = 23 ECHO = 24
-    sensor_ultra = Sensor(20, 26)
+    sensor_handler = SensorHandler("distance", Sensor(20, 26))
+    shot_handler = ShotHandler ("George")
 
-def exit():
-    print "[Status] Exit"
-    GPIO.cleanup()
-
-
-
+# Called every time the program executes the main loop
 def loop():
-    print "loop"
-    # print "Distance:" , sensor_ultra.measure_distance() , "cm"
-    if sensor_ultra.measure_distance() <= 15:
-        print "Shot Make"
-        
+    global sensor_handler, shot_handler
+
+    # update the sensor handler
+    sensor_handler.update()
+
+    if (sensor_handler.wasShotMade()):
+        shot_handler.shoot()
+
+        # sleep the thread so a shot doesnt get counted twice
+        time.sleep(0.25)
 
     #Slow the loop
-	#print "Waiting For Sensor To Settle"
     time.sleep(0.01)
 
+def exit():
+    print "[STATUS] Exit"
+    GPIO.cleanup()
 
-init()
-while True:
-    loop()
+def internet_on():
+    try:
+        urllib2.urlopen('http://216.58.192.142', timeout=1)
+        return True
+    except urllib2.URLError as err:
+        return False
 
-exit()
+interneton = False;
+def main():
+    init()
+
+    counter = 0
+    while True:
+
+        # only check the internet every once in a while
+        if (counter % 10000 == 0):
+            print "[PROCESS] Begin check internet."
+            interneton = internet_on()
+
+        loop()
+
+        counter = counter + 1
+
+    exit()
+
+
+main()
