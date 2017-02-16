@@ -1,4 +1,4 @@
-import time
+import time as time_m
 import os.path
 
 class ShotHandler:
@@ -24,10 +24,10 @@ class ShotHandler:
     # a player has taken a shot and we want to append the shot to our shot queue
     def shoot(self):
         if self.shot_allowed:
-            self.shot_queue.append( Shot() )
-            print "[EVENT] Shot taken at " , self.shot_queue[-1][0] , " by ", self.shot_queue[-1][1]
+            self.shot_queue.append( Shot(self.player) )
+            print "[EVENT] Shot taken at " , self.shot_queue[-1].get_time() , " by ", self.shot_queue[-1].get_user_id()
         else:
-            print "[EVENT] Shot taken at " , self.shot_queue[-1][0] , " by ", self.shot_queue[-1][1]
+            print "[EVENT] DISSALLOWED! Shot taken at " , self.shot_queue[-1].get_time() , " by ", self.shot_queue[-1].get_user_id()
 
     def load_from_file(self):
         f = open(self.shot_file,'r')
@@ -54,11 +54,11 @@ class ShotHandler:
 # Define what a shot is
 # Tracks who took the shot, and the time at which it was taken
 class Shot:
-    def __init__(self, user_id, time="now"):
-        if (time == "now"):
-            self.time = time.strftime('%Y-%m-%d %H:%M:%S')
+    def __init__(self, user_id, time1="now"):
+        if (time1 == "now"):
+            self.time = time_m.strftime('%Y-%m-%d %H:%M:%S')
         else:
-            self.time = time
+            self.time = time1
 
         self.user_id = user_id
 

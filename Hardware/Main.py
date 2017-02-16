@@ -26,7 +26,6 @@ def loop():
     sensor_handler.update()
 
     if (sensor_handler.wasShotMade()):
-        print "[EVENT] Shot made"
         shot_handler.shoot()
 
         # sleep the thread so a shot doesnt get counted twice
