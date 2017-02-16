@@ -20,6 +20,10 @@ class SensorHandler:
         if len(self.recent_values) > self.n:
             self.recent_values.pop(0)
 
+    def change_pins (self, pin1, pin2):
+        self.sensor.set_trig_pin(pin1)
+        self.sensor.set_echo_pin(pin2)
+
     # Determine if all of he values in the list are under the cutoff val
     def wasShotMade(self):
         for i in self.recent_values:

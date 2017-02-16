@@ -29,7 +29,7 @@ def loop():
         shot_handler.shoot()
 
         # sleep the thread so a shot doesnt get counted twice
-        time.sleep(0.25)
+        time.sleep(1.0)
 
     #Slow the loop
     time.sleep(0.01)
