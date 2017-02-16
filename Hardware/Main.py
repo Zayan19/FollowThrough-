@@ -1,32 +1,35 @@
 import RPi.GPIO as GPIO
 from Sensor import Sensor
+from SensorHandler import SensorHandler
+from ShotHandler import ShotHandler
+
 import time
 import urllib2
 
-sh = 0
 
 def init ():
     print "[STATUS] Init"
-    global sh
+    global sensor_handler, shot_handler
 
     # Set the GPIO mode
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BCM)
-
     #Initialize the sensor to pins 23 and 24
-    sh = SensorHandler(Sensor(20, 26))
+    sensor_handler = SensorHandler("distance", Sensor(20, 26))
+    shot_handler = ShotHandler ("George")
 
-recent_values = []
 # Called every time the program executes the main loop
 def loop():
-    global sh
+    global sensor_handler, shot_handler
 
     # update the sensor handler
-    sh.update()
+    sensor_handler.update()
 
-    if (sh.wasShotMade()):
+    if (sensor_handler.wasShotMade()):
         print "[EVENT] Shot made"
-        sh.shoot()
+        shot_handler.shoot()
+
+        # sleep the thread so a shot doesnt get counted twice
         time.sleep(0.25)
 
     #Slow the loop
@@ -55,11 +58,7 @@ def main():
             print "[PROCESS] Begin check internet."
             interneton = internet_on()
 
-
-
-
         loop()
-
 
         counter = counter + 1
 
