@@ -24,17 +24,18 @@ class ShotHandler:
     # a player has taken a shot and we want to append the shot to our shot queue
     def shoot(self):
         if self.shot_allowed:
-            self.shots_queue.append( Shot() )
-            print "[EVENT] Shot Taken at " , self.shots_queue[-1][0] , " by ", self.shots_queue[-1][1]
+            self.shot_queue.append( Shot() )
+            print "[EVENT] Shot taken at " , self.shot_queue[-1][0] , " by ", self.shot_queue[-1][1]
         else:
+            print "[EVENT] Shot taken at " , self.shot_queue[-1][0] , " by ", self.shot_queue[-1][1]
 
     def load_from_file(self):
         f = open(self.shot_file,'r')
         # load all of the shots into the shot_queue
         for line in f:
             params = line.split(",")
+            shot_queue.append((params[0],params[1]))
 
-            shots_queue.append((params[0],params[1]))
         f.close()
 
     def save_to_file(self):
@@ -43,7 +44,7 @@ class ShotHandler:
         for shot in shot_queue:
             f.write(shot.get_user_id(), "," , shot.get_time());
         f.close()
-        
+
     # Getters and setters for what file to save too
     def get_shot_file(self):
         return self.shot_file
