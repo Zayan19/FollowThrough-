@@ -1,3 +1,4 @@
+
 from collections import deque
 import sys
 sys.path.append('/usr/local/lib/python2.7/site-packages')
@@ -45,7 +46,11 @@ def angle(cx, cy, ex, ey) :
    return theta
 
 
-def runVideo():
+def runVideo(stream, video_path=None):
+
+    if (not stream and video_path is None):
+        print("Must supply a video if not streaming")
+        return
 
     theta = 0
     entryAngle = 0
@@ -53,7 +58,6 @@ def runVideo():
     foundAngle = False
     # construct the argument parse and parse the arguments
     ap = argparse.ArgumentParser()
-    ap.add_argument("-v", "--video", nargs="?", type=str)
     ap.add_argument("-b", "--buffer", type=int, default=15,
         help="max buffer size")
     args = vars(ap.parse_args())
@@ -66,12 +70,12 @@ def runVideo():
 
     pts = []
 
-    # If a video path is supplied via cl arg, run it
-    if args.get("video"):
-        camera = cv2.VideoCapture(args.get("video"))
-    # Otherwise, use the web cam
-    else:
+    # If user wants to stream 
+    if stream:
         camera = cv2.VideoCapture(0)
+    # Otherwise, use 
+    else:
+        camera = cv2.VideoCapture(video_path)
 
     #counter to check how many times the points have gone in the down and left direction
     downLeft = 0
@@ -91,7 +95,7 @@ def runVideo():
 
         # if we are viewing a video and we did not grab a frame,
         # then we have reached the end of the video
-        if args.get("video") and not grabbed:
+        if not stream and not grabbed:
             break
 
         # resize the frame, blur it, and convert it to the HSV
@@ -185,7 +189,7 @@ def runVideo():
             cv2.putText(frame,"Max height was "+str(round(((250-maxY)/40),2))+" M!",(10,125),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
 
         # loop over the set of tracked points
-        for i in xrange(1, len(pts)):
+        for i in range(1, len(pts)):
             # if either of the tracked points are None, ignore
             # them
             if pts[i - 1] is None or pts[i] is None:
@@ -216,10 +220,8 @@ def runVideo():
     maxY = round((250-maxY)/40,2)
 
     valueList = [entryAngle,exitAngle,maxY]
-    print (valueList[0])
-    print (valueList[1])
-    print (valueList[2])
     return valueList;
 
 
-runVideo()
+if __name__ == '__main__':
+    runVideo(False, 'test_videos/FT_make.MOV')
