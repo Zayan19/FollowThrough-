@@ -17,8 +17,9 @@ class Ball_Tracker:
         self.is_live = is_live
         self.video_path = video_path
 
-        if not self.is_live and self.video_path is None:
-            assert False, "Must supply a video if not using webcam"
+        if not self.is_live:
+            if self.video_path is None or len(self.video_path) == 0:
+                assert False, "Must supply a video if not using webcam"
 
         if is_live:
             self.camera = cv2.VideoCapture(0)
