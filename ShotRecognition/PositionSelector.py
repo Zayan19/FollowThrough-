@@ -1,8 +1,4 @@
-import cv2
-from PyQt4 import QtGui, QtCore
-
-
-class Capture():
+class PositionSelector:
     def __init__(self):
         self.capturing = False
         self.c = cv2.VideoCapture(0)
