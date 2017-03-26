@@ -14,7 +14,7 @@ class CreateShotsTable extends Migration
     public function up()
     {
         Schema::create('shots', function (Blueprint $table) {
-            $table->increments('id');
+        $table->increments('id');
 	    $table->integer('user_id')->unsigned();
 	    $table->timestamp('time_of_shot');
 	    $table->integer('zone');
@@ -24,7 +24,7 @@ class CreateShotsTable extends Migration
 	    $table->decimal('arc_height',5,2);
 	    $table->boolean('made');
 
-            $table->timestamps();
+        $table->timestamps();
 	    $table->foreign('user_id')
 		  ->references('id')->on('users')
   		  ->onDelete('cascade');
