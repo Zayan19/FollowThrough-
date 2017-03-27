@@ -2,15 +2,17 @@ from collections import deque
 import sys
 sys.path.append('/usr/local/lib/python2.7/site-packages')
 # import numpy as np
+from PyQt4 import QtGui, QtCore
+
 import argparse
 import cv2
 import imutils
 import math
 
-class Ball_Tracker:
-    """ 
+class Ball_Tracker():
+    """
         Wrapper for implementing Ball tracking algorithms
-        Currently self contained to start and stop OpenCV capturing 
+        Currently self contained to start and stop OpenCV capturing
     """
 
     def __init__(self, is_live, video_path = None):
@@ -204,4 +206,3 @@ class Ball_Tracker:
        self.theta = abs(self.theta)
        # self.theta=180-self.theta
        return self.theta
-
