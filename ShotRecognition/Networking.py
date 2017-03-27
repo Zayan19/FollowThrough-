@@ -41,6 +41,12 @@ class Networking_Python:
 
         return page.read()
 
+    def set_user_id(self, user_id):
+        self.user_id = user_id
+
+    def set_zone(self, zone):
+        self.zone = zone
+
     def _format_datetime(date):
         str_date = str(date)
         i = str_date.index('.')
@@ -50,8 +56,9 @@ class Networking_Python:
 class Networking_Hardware:
     """ Wrapper for posting data (From arduino module) """
 
-    def __init__(self, time):
-        self.time = time
+    def __init__(self, time_of_shot):
+        self.time_of_shot = time_of_shot
+        self.user_id = None
 
     def post(self, url):
         """ Post data given by constructor to api """
@@ -60,7 +67,7 @@ class Networking_Hardware:
         assert self.user_id is not None, "Must login before posting to server"
 
         data_to_post['user_id'] = self.user_id 
-        data_to_post['time_of_shot'] = self.time 
+        data_to_post['time_of_shot'] = self.time_of_shot 
 
         url_values = urllib.urlencode(data_to_post)
 
@@ -71,3 +78,6 @@ class Networking_Hardware:
             print e.read()
 
         return page.read()
+
+    def set_user_id(self, user_id):
+        self.user_id = user_id
