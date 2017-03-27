@@ -8,8 +8,7 @@ class Window_Handler:
 
     def __init__(self, initial_state):
         self.state_stack = []
-        self.state_stack.push(initial_state)
-
+        self.state_stack.append(initial_state)
         self.available_states = []
 
     def current_state(self):
@@ -21,7 +20,6 @@ class Window_Handler:
             return -1
         if self.current_state() in self.available_states:
             return state
-
 
     # Go back one state
     def go_back(self):
