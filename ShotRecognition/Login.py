@@ -42,6 +42,7 @@ class Login(QtGui.QDialog):
     # TODO: Doxygen
     # handles loging submission
     def handleLogin(self):
+
         if ():
             self.accept()
         else:
