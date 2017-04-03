@@ -14,9 +14,14 @@ class State:
     def get_layout (self):
         return self.layout
 
-    def add_widget(self, widget):
-        # add the widget to the layout and add it to the ist of widgets
-        self.layout.addWidget(widget)
+    def add_widget(self, widget, position="None"):
+
+
+        if type(position) is tuple:
+            self.layout.addWidget(widget, *position)
+        else:
+            self.layout.addWidget(widget)
+
         self.widgets.append(widget)
 
     def remove_all_widgets(self):
