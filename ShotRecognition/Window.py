@@ -10,6 +10,7 @@ from Ball_Tracker import Ball_Tracker
 from PyQt4 import QtGui, QtCore
 from State import State
 from Login import Login
+import User
 class Window(QtGui.QMainWindow):
     window_state = 0;
 
@@ -17,37 +18,21 @@ class Window(QtGui.QMainWindow):
         QtGui.QMainWindow.__init__(self, parent)
         self.setWindowTitle('FollowThrough')
 
-        # state = self.init_login_state()
 
-
-        # if login.exec_() == QtGui.QDialog.Accepted:
-        #     window = Window()
-        #     window.show()
-        #     sys.exit(app.exec_())
-
-        # self.bal_tracker = Ball_Tracker(True, None)
-
-        # self.capture = Capture()
-        # if (self.menu):
-        #     self.start_button = QtGui.QPushButton('Begin Session')
-        #     self.start_button.clicked.connect(self.capture.startCapture)
-
-        # self.end_button = QtGui.QPushButton('End Session')
-        # # self.end_button.clicked.connect(self.capture.endCapture)
-        #
         self.login_button = QtGui.QPushButton('Login', self)
-        # self.login_button.clicked.connect(self.login)
-        self.login_button.clicked.connect(self.showDial)
+        self.login_button.clicked.connect(self.click_login)
 
         # self.setLayout(state.get_layout())
         self.setGeometry(200,200,500,500)
         self.show()
 
-    def showDial(self):
+    def click_login(self):
         login = Login("",self)
         if login.exec_():   # here dialog will be shown and main script will wait for its closing (with no errors)
             data = login.textName.text()
             print data
+            # if (data ['userId'] != -1):
+            #     User.setId(data['userId'])
 
     #state ID = 0
     def init_login_state(self):

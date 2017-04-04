@@ -2,7 +2,6 @@ from datetime import datetime
 import urllib, urllib2
 import json
 
-
 class Shot_Handler:
     """ Wrapper for posting data (From python module) """
     def __init__(self, entry_angle, exit_angle, arc_height, zone = 0):
@@ -52,7 +51,6 @@ class Shot_Handler:
         i = str_date.index('.')
         return str_date[:i]
 
-
 class Login_Handler:
     """ Wrapper for posting data (From python module) """
     def __init__(self, username, password):
@@ -63,16 +61,15 @@ class Login_Handler:
         """ Post data given by constructor to api """
         data_to_post = {}
 
-        data_to_post['username'] = self.username
+        data_to_post['email'] = self.username
         data_to_post['password'] = self.password
-        print "adsss"
+
 
         url_values = urllib.urlencode(data_to_post)
-
+        print url_values
         page = None
         try:
            page = urllib2.urlopen(url, url_values)
-           print page
         except urllib2.HTTPError as e:
             print e.read()
 

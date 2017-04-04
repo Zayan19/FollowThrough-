@@ -1,6 +1,7 @@
 from PyQt4 import QtGui
 from Networking import Login_Handler
 from Filters.LoginEventFilters import UsernameEventFilter, PasswordEventFilter
+import User
 
 # TODO: Doxygen
 class Login(QtGui.QDialog):
@@ -54,10 +55,11 @@ class Login(QtGui.QDialog):
             # Attempt to login with the server
             login_handler = Login_Handler(self.textName.text(),self.textPass.text())
             data = login_handler.post('http://54.145.183.186/api/user')
-
+            print (data['userId'])
             if data['userId'] == -1:
                 QtGui.QMessageBox.warning(self, 'Error', 'Login failed, please try again!')
             else:
+                # User.login(data[userId])
                 self.accept()
 
         else:
