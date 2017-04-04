@@ -1,5 +1,6 @@
 from datetime import datetime
 import urllib, urllib2
+import json
 
 
 class Shot_Handler:
@@ -62,22 +63,21 @@ class Login_Handler:
         """ Post data given by constructor to api """
         data_to_post = {}
 
-        assert self.user_id is not None, "Must login before posting to server"
-        assert self.zone is not None, "Must set zone before posting to server"
-
         data_to_post['username'] = self.username
         data_to_post['password'] = self.password
-
+        print "adsss"
 
         url_values = urllib.urlencode(data_to_post)
 
         page = None
         try:
            page = urllib2.urlopen(url, url_values)
+           print page
         except urllib2.HTTPError as e:
             print e.read()
 
-        return page.read()
+        data = page.read()
+        return json.loads(data)
 
     def set_user_id(self, user_id):
         self.user_id = user_id
@@ -113,8 +113,8 @@ class Basket_Handler:
            page = urllib2.urlopen(url, url_values)
         except urllib2.HTTPError as e:
             print e.read()
-
-        return page.read()
+        data = page.read()
+        return json.loads(data)
 
     def set_user_id(self, user_id):
         self.user_id = user_id

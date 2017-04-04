@@ -46,7 +46,8 @@ class Window(QtGui.QMainWindow):
     def showDial(self):
         login = Login("",self)
         if login.exec_():   # here dialog will be shown and main script will wait for its closing (with no errors)
-            data = dialog.line_edit.text()
+            data = login.textName.text()
+            print data
 
     #state ID = 0
     def init_login_state(self):

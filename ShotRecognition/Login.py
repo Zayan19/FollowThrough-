@@ -2,7 +2,6 @@ from PyQt4 import QtGui
 from Networking import Login_Handler
 from Filters.LoginEventFilters import UsernameEventFilter, PasswordEventFilter
 
-
 # TODO: Doxygen
 class Login(QtGui.QDialog):
 
@@ -18,8 +17,6 @@ class Login(QtGui.QDialog):
     # constructor
     def __init__(self, dbConnection, parent=None):
         super(Login, self).__init__(parent)
-
-
 
         # Define filters
         self.login_filter = UsernameEventFilter()
@@ -42,8 +39,6 @@ class Login(QtGui.QDialog):
         self.buttonLogin = QtGui.QPushButton('Login', self)
         self.buttonLogin.clicked.connect(self.handleLogin)
 
-
-
         layout = QtGui.QVBoxLayout(self)
         layout.addWidget(self.login_label)
         layout.addWidget(self.textName)
@@ -54,8 +49,16 @@ class Login(QtGui.QDialog):
     # handles loging submission
     def handleLogin(self):
 
-        if ():
-            self.accept()
+        if (len(self.textName.text()) >= 0 and self.textName.text() != "Username"):
+
+            # Attempt to login with the server
+            login_handler = Login_Handler(self.textName.text(),self.textPass.text())
+            data = login_handler.post('http://54.145.183.186/api/user')
+
+            if data['userId'] == -1:
+                QtGui.QMessageBox.warning(self, 'Error', 'Login failed, please try again!')
+            else:
+                self.accept()
+
         else:
-            QtGui.QMessageBox.warning(
-                self, 'Error', 'Bad user or password')
+            QtGui.QMessageBox.warning(self, 'Error', 'Please enter your username and password!')
