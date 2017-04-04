@@ -20,6 +20,7 @@ class Login(QtGui.QDialog):
         super(Login, self).__init__(parent)
 
 
+
         # Define filters
         self.login_filter = UsernameEventFilter()
         self.password_filter = PasswordEventFilter()
