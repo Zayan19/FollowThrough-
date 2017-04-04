@@ -5,6 +5,15 @@ from Filters.LoginEventFilters import UsernameEventFilter, PasswordEventFilter
 
 # TODO: Doxygen
 class Login(QtGui.QDialog):
+
+    style ='''
+    QLabel
+    {
+        font-family: Times New Roman;
+        font-size: 18pt;
+    }
+    '''
+
     # TODO: Doxygen
     # constructor
     def __init__(self, dbConnection, parent=None):
@@ -17,6 +26,7 @@ class Login(QtGui.QDialog):
 
         # Login login_label
         self.login_label = QtGui.QLabel("Login")
+        self.login_label.setStyleSheet(self.style)
 
         # Username Area
         self.textName = QtGui.QLineEdit("Username",self)
