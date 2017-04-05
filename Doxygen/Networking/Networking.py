@@ -64,7 +64,7 @@ class Networking_Python:
 class Networking_Hardware:
     """ Wrapper for posting data (From arduino module) """
     """ user_id: The ID of the user that is currently logged in """
-    """ time_of_shot: The exact time and shot the time was taken """
+    """ time_of_shot: The exact time and date the shot was taken """
 
     def __init__(self, time_of_shot):
         self.time_of_shot = time_of_shot
