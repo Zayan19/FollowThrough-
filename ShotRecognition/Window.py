@@ -11,23 +11,46 @@ from PyQt4 import QtGui, QtCore
 from State import State
 from Login import Login
 import User
+
+
 class Window(QtGui.QMainWindow):
     window_state = 0;
 
     def __init__(self, parent=None):
         QtGui.QMainWindow.__init__(self, parent)
+
         self.setWindowTitle('FollowThrough')
 
+        wid = QtGui.QWidget(self)
+        self.setCentralWidget(wid)
+        # p = wid.palette()
+        # p.setColor(wid.backgroundRole(), QtGui.QColor.red)
+        # wid.setPalette(p)
+        wid.setStyleSheet("background-color:white;")
 
-        self.login_button = QtGui.QPushButton('Login', self)
+        main_layout = QtGui.QGridLayout()
+
+        self.label = QtGui.QLabel()
+        self.pixmap = QtGui.QPixmap('resources/followthrough_logo.png')
+        self.label.setPixmap(self.pixmap)
+
+        self.login_button = QtGui.QPushButton('Login')
         self.login_button.clicked.connect(self.click_login)
 
-        # self.setLayout(state.get_layout())
+        self.logout_button = QtGui.QPushButton('Logout')
+        self.logout_button.clicked.connect(self.click_login)
+
+        main_layout.addWidget(self.label,0,1)
+        main_layout.addWidget(self.login_button,1,1)
+        main_layout.addWidget(self.logout_button,2,1)
+
+
+        wid.setLayout(main_layout)
         self.setGeometry(200,200,500,500)
         self.show()
 
     def click_login(self):
-        login = Login("",self)
+        login = Login(self)
         if login.exec_():   # here dialog will be shown and main script will wait for its closing (with no errors)
             data = login.textName.text()
             print data

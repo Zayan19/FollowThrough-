@@ -16,7 +16,7 @@ class Login(QtGui.QDialog):
 
     # TODO: Doxygen
     # constructor
-    def __init__(self, dbConnection, parent=None):
+    def __init__(self, parent=None):
         super(Login, self).__init__(parent)
 
         # Define filters
