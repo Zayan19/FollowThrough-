@@ -1,13 +1,20 @@
 from datetime import datetime
 import urllib, urllib2
-import json
+import Ball_Tracking
 
-class Shot_Handler:
+class Networking_Python:
     """ Wrapper for posting data (From python module) """
+
     def __init__(self, entry_angle, exit_angle, arc_height, zone = 0):
+        """Used to initialize variables to be posted to server"""
+        """entry_angle: The angle of the ball as it enters the basket"""
+        """exit_angle: The angle of the ball as it leaves the player's hands"""
+        """arc_height: The maximum height the ball reaches during the shot."""
+        """Zone: Which zone the ball was shot from"""
+        """over_under: Whether the ball reached at least the height of the basket or not at any point"""
         self.entry_angle = entry_angle
         self.exit_angle = exit_angle
-        self.arc_height = arc_heigth
+        self.arc_height = arc_height
         self.zone = zone
 
         self.over_under = 'over' if arc_height > 4 else 'under'
@@ -16,6 +23,7 @@ class Shot_Handler:
 
     def post(self, url):
         """ Post data given by constructor to api """
+        """ This data is sent to the server as an array"""
         data_to_post = {}
 
         assert self.user_id is not None, "Must login before posting to server"
@@ -47,48 +55,16 @@ class Shot_Handler:
         self.zone = zone
 
     def _format_datetime(date):
+        """Used to format time of shot"""
         str_date = str(date)
         i = str_date.index('.')
         return str_date[:i]
 
-class Login_Handler:
-    """ Wrapper for posting data (From python module) """
-    def __init__(self, username, password):
-        self.password = password
-        self.username = username
 
-    def post(self, url):
-        """ Post data given by constructor to api """
-        data_to_post = {}
-
-        data_to_post['email'] = self.username
-        data_to_post['password'] = self.password
-
-
-        url_values = urllib.urlencode(data_to_post)
-        print url_values
-        page = None
-        try:
-           page = urllib2.urlopen(url, url_values)
-        except urllib2.HTTPError as e:
-            print e.read()
-
-        data = page.read()
-        return json.loads(data)
-
-    def set_user_id(self, user_id):
-        self.user_id = user_id
-
-    def set_zone(self, zone):
-        self.zone = zone
-
-    def _format_datetime(date):
-        str_date = str(date)
-        i = str_date.index('.')
-        return str_date[:i]
-
-class Basket_Handler:
+class Networking_Hardware:
     """ Wrapper for posting data (From arduino module) """
+    """ user_id: The ID of the user that is currently logged in """
+    """ time_of_shot: The exact time and date the shot was taken """
 
     def __init__(self, time_of_shot):
         self.time_of_shot = time_of_shot
@@ -110,8 +86,8 @@ class Basket_Handler:
            page = urllib2.urlopen(url, url_values)
         except urllib2.HTTPError as e:
             print e.read()
-        data = page.read()
-        return json.loads(data)
+
+        return page.read()
 
     def set_user_id(self, user_id):
         self.user_id = user_id
