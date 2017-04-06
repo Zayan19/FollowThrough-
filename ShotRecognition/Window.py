@@ -13,9 +13,32 @@ from Login import Login
 import User
 
 
+
+
 class Window(QtGui.QMainWindow):
     window_state = 0;
+    button_style = '''
+                QPushButton {
+                    border: 1px solid grey;
+                    width:100%;
+                    margin-left: 150px;
+                    margin-right: 150px;
+                    margin-bottom: 3px;
+                    padding-top: 3px;
+                    padding-bottom:3px;
+                }
+                QPushButton:pressed {
+                    border: 1px solid grey;
+                    width:100%;
+                    margin-left: 150px;
+                    margin-right: 150px;
+                    margin-bottom: 3px;
+                    padding-top: 3px;
+                    padding-bottom:3px;
+                    background-color:grey;
+                }
 
+                '''
     def __init__(self, parent=None):
         QtGui.QMainWindow.__init__(self, parent)
 
@@ -30,23 +53,40 @@ class Window(QtGui.QMainWindow):
 
         main_layout = QtGui.QGridLayout()
 
-        self.label = QtGui.QLabel()
+        label = QtGui.QLabel()
         self.pixmap = QtGui.QPixmap('resources/followthrough_logo.png')
-        self.label.setPixmap(self.pixmap)
+        label.setPixmap(self.pixmap)
+        # label.setStyleSheet()
 
-        self.login_button = QtGui.QPushButton('Login')
-        self.login_button.clicked.connect(self.click_login)
+        login_button = QtGui.QPushButton('Login')
+        login_button.clicked.connect(self.click_login)
 
-        self.logout_button = QtGui.QPushButton('Logout')
-        self.logout_button.clicked.connect(self.click_login)
+        select_position = QtGui.QPushButton('Select Position')
+        # self.select_position.clicked.connect(self.select_position)
 
-        main_layout.addWidget(self.label,0,1)
-        main_layout.addWidget(self.login_button,1,1)
-        main_layout.addWidget(self.logout_button,2,1)
+        capture_video = QtGui.QPushButton('Capture Video')
+        # self.capture_video.clicked.connect(self.begin_capture)
+
+
+        logout_button = QtGui.QPushButton('Logout')
+        logout_button.clicked.connect(self.click_login)
+
+        self.buttons = [login_button, select_position, capture_video, logout_button]
+
+        for item in self.buttons:
+            item.setStyleSheet(self.button_style)
+
+        main_layout.addWidget(label,0,1)
+        main_layout.addWidget(login_button,1,1)
+        main_layout.addWidget(select_position,3,1)
+        main_layout.addWidget(capture_video,2,1)
+        main_layout.addWidget(logout_button,4,1)
+
 
 
         wid.setLayout(main_layout)
-        self.setGeometry(200,200,500,500)
+        # self.setGeometry(200,200,600,500)
+        self.setFixedSize(self.size())
         self.show()
 
     def click_login(self):
