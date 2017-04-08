@@ -61,12 +61,14 @@ class ShotsController extends Controller
             $exit_avg += $s->exit_angle;
         }
         $exit_avg /= $num_shots;
+        $exit_avg = round($exit_avg, 2);
 
         $entry_avg = 0;
         foreach ($shots as $i=>$s) {
             $entry_avg += $s->entry_angle;
         }
         $entry_avg /= $num_shots;
+        $entry_avg = round($entry_avg, 2);
 
 
         // Compute Average Arc Height
@@ -75,6 +77,8 @@ class ShotsController extends Controller
             $arc_height_avg += $s->arc_height;
         }
         $arc_height_avg /= $num_shots;
+        $arc_height_avg = round($arc_height_avg, 2);
+
 
         // Compute Average Shot Percentage
         $shots_avg = 0;
@@ -83,7 +87,8 @@ class ShotsController extends Controller
                 $shots_avg ++;
             }
         }
-        $shots_avg = ($shots_avg / $num_shots) * 100;
+        $shots_avg = ($shots_avg / $num_shots);
+        $shots_avg = round($shots_avg, 2) * 100;
 
 
         return array($zone_avg, $exit_avg, $entry_avg, $arc_height_avg, $shots_avg);
