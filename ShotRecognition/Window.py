@@ -47,9 +47,7 @@ class Window(QtGui.QMainWindow):
 
         wid = QtGui.QWidget(self)
         self.setCentralWidget(wid)
-        # p = wid.palette()
-        # p.setColor(wid.backgroundRole(), QtGui.QColor.red)
-        # wid.setPalette(p)
+
         wid.setStyleSheet("background-color:white;")
 
         main_layout = QtGui.QGridLayout()
@@ -57,7 +55,7 @@ class Window(QtGui.QMainWindow):
         label = QtGui.QLabel()
         self.pixmap = QtGui.QPixmap('resources/followthrough_logo.png')
         label.setPixmap(self.pixmap)
-        # label.setStyleSheet()
+
 
         self.login_button = QtGui.QPushButton('Login')
         self.login_button.clicked.connect(self.click_login)
@@ -109,6 +107,8 @@ class Window(QtGui.QMainWindow):
     def click_capture_video(self):
         pass
     def click_load_video(self):
+        Ball_Tracker('Ball Tracker', cv2.VideoCapture('test_videos/3P_make.MOV')).run()
+
         pass
 
     def click_logout(self):

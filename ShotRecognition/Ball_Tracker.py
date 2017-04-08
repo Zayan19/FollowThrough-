@@ -1,3 +1,5 @@
+import sys
+sys.path.append('/usr/local/lib/python2.7/site-packages')
 import cv2
 import numpy as np
 from managers import WindowManager, CaptureManager
@@ -13,9 +15,6 @@ class Ball_Tracker(object):
         # define a geneal orange color to help with detection
         self.orangeLower = (0,96,91)
         self.orangeUpper = (7,255,255)
-
-
-
 
     def run(self):
         self._windowManager.createWindow()
@@ -38,13 +37,13 @@ class Ball_Tracker(object):
         term_crit = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 1)
 
 
-        while self._windowManager.isWindowCreated: 
+        while self._windowManager.isWindowCreated:
             # Grab the next frame from the video
             self._captureManager.enterFrame()
             frame = self._captureManager.frame
 
             # Resize the frame to 70% width for better viewing
-            frame = cv2.resize(frame, (0,0), fx=0.7, fy=0.7)
+            frame = cv2.resize(frame, (0,0), fx=0.6, fy=0.6)
 
             # convert the current frame to HSV color space for back_projection calculation
             hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -64,9 +63,11 @@ class Ball_Tracker(object):
             # Signal we are done with the frame, write to cv2.imshow
             self._captureManager.exitFrame()
 
-            # Always listen for specific keypress events 
+            # Always listen for specific keypress events
+            # Triggered by onKeypress(keycode)!
             # Triggered by onKeypress(keycode)!
             self._windowManager.processEvents()
+
 
     def _find_basketball(self):
         while True:
@@ -86,13 +87,13 @@ class Ball_Tracker(object):
     def onKeypress(self, keycode):
         """
             Handle a keypress
-            
+
             space -> Take a screenshot
             tab -> start / stop recording a screencast
             esc -> quit
         """
         # spacebar
-        if keycode == 32: 
+        if keycode == 32:
             self._captureManager.writeImage('screenshot.png')
         # tab
         elif keycode == 9:
@@ -103,7 +104,6 @@ class Ball_Tracker(object):
         # esc
         elif keycode == 27:
             self._windowManager.destroyWindow()
-    
+
 if __name__ == '__main__':
    Ball_Tracker('Ball Tracker', cv2.VideoCapture('test_videos/3P_make.MOV')).run()
-
