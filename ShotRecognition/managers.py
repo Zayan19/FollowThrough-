@@ -6,7 +6,7 @@ class CaptureManager(object):
     def __init__(self, capture, previewWindowManager = None, shouldMirrorPreview = False):
 
         self.previewWindowManager = previewWindowManager
-        self.shouldMirrorPreview = shouldMirrorPreview 
+        self.shouldMirrorPreview = shouldMirrorPreview
 
         self._capture = capture
         self._channel = 0
@@ -21,10 +21,10 @@ class CaptureManager(object):
         self._framesElapsed = 0
         self._fpsEstimate = None
 
-    @property
+    @property  
     def channel(self):
         return self._channel
-    
+
     @channel.setter
     def channel(self, value):
         if self._channel != value:
@@ -53,7 +53,7 @@ class CaptureManager(object):
 
     def enterFrame(self):
         """Capture the next frame, if any."""
-        
+
         # First, check that any previous frame was exited.
         assert not self._enteredFrame, "previous enterFrame() had no matching exitFrame()"
 
@@ -101,9 +101,9 @@ class CaptureManager(object):
     def writeImage(self, filename):
         """Write the next exited frame to an image file"""
         self._imageFileName = filename
-
-    def startWritingVideo(self, filename, 
-            encoding = cv2.VideoWriter_fourcc('I', '4', '2', '0')):
+# v2.VideoWriter_fourcc('I', '4', '2', '0')):
+    def startWritingVideo(self, filename,
+            encoding = cv2.cv.CV_FOURCC(*'I420')):
         """Start writing exited frames to a video file"""
         self._videoFileName = filename
         self._videoEncoding = encoding
@@ -140,7 +140,7 @@ class WindowManager(object):
     def __init__(self, windowName, keypressCallback = None):
 
         self.keypressCallback = keypressCallback
-        
+
         self._windowName = windowName
         self._isWindowCreated = False
 
@@ -167,4 +167,3 @@ class WindowManager(object):
             # Discard any non-ASCII info encoded by GTK
             keycode &= 0xFF
             self.keypressCallback(keycode)
-

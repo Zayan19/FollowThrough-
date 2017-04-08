@@ -1,26 +1,27 @@
+class User:
+    def __init__(self):
+        self.userId = None
+        self.username = None
 
-__userId = None
-__username = None
+    # Log in a user once their ID is verified
+    def login(self,uID):
+        if (self.userId == None):
+            self.userId = uID
+            return self.userId
+        return -1
 
-# Log in a user once their ID is verified
-def login(uID):
-    if (__userId == None):
-        __userId = uID
-        return __userId
-    return -1
-    
-# Remove the logged out user
-def logout(uID):
-    if (__userId == uID):
-        __userId = None
-        return __userId
-    return -1
+    # Remove the logged out user
+    def logout(self,uID):
+        if (self.userId == uID):
+            self.userId = None
+            return self.userId
+        return -1
 
-# Returns the current logged in user
-def getCurrentUser():
-    return __userId
+    # Returns the current logged in user
+    def getCurrentUser(self):
+        return self.userId
 
-def isLoggedIn():
-    if (__userId == None):
-        return False
-    return True
+    def isLoggedIn(self):
+        if (self.userId == None):
+            return False
+        return True

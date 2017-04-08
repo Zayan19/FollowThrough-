@@ -5,13 +5,12 @@ import sys
 
 sys.path.append('/usr/local/lib/python2.7/site-packages')
 import cv2
-from Capture import Capture
+# from Capture import Capture
 from Ball_Tracker import Ball_Tracker
 from PyQt4 import QtGui, QtCore
 from State import State
 from Login import Login
-import User
-
+from User import User
 
 
 
@@ -42,6 +41,8 @@ class Window(QtGui.QMainWindow):
     def __init__(self, parent=None):
         QtGui.QMainWindow.__init__(self, parent)
 
+        self.user = User()
+
         self.setWindowTitle('FollowThrough')
 
         wid = QtGui.QWidget(self)
@@ -58,33 +59,38 @@ class Window(QtGui.QMainWindow):
         label.setPixmap(self.pixmap)
         # label.setStyleSheet()
 
-        login_button = QtGui.QPushButton('Login')
-        login_button.clicked.connect(self.click_login)
+        self.login_button = QtGui.QPushButton('Login')
+        self.login_button.clicked.connect(self.click_login)
 
-        select_position = QtGui.QPushButton('Select Position')
-        # self.select_position.clicked.connect(self.select_position)
+        self.select_position = QtGui.QPushButton('Select Position')
+        self.select_position.clicked.connect(self.click_select_position)
 
-        capture_video = QtGui.QPushButton('Capture Video')
-        # self.capture_video.clicked.connect(self.begin_capture)
+        self.capture_video = QtGui.QPushButton('Capture Video')
+        self.capture_video.clicked.connect(self.click_capture_video)
+
+        self.load_video = QtGui.QPushButton('Load Video from File')
+        self.load_video.clicked.connect(self.click_load_video)
+
+        self.logout_button = QtGui.QPushButton('Logout')
+        self.logout_button.clicked.connect(self.click_logout)
+
+        self.buttons = [self.login_button, self.select_position, self.capture_video, self.logout_button,self.load_video]
 
 
-        logout_button = QtGui.QPushButton('Logout')
-        logout_button.clicked.connect(self.click_login)
-
-        self.buttons = [login_button, select_position, capture_video, logout_button]
+        self.update_button_state()
 
         for item in self.buttons:
             item.setStyleSheet(self.button_style)
 
         main_layout.addWidget(label,0,1)
-        main_layout.addWidget(login_button,1,1)
-        main_layout.addWidget(select_position,3,1)
-        main_layout.addWidget(capture_video,2,1)
-        main_layout.addWidget(logout_button,4,1)
-
-
+        main_layout.addWidget(self.login_button,1,1)
+        main_layout.addWidget(self.select_position,3,1)
+        main_layout.addWidget(self.capture_video,2,1)
+        main_layout.addWidget(self.load_video,4,1)
+        main_layout.addWidget(self.logout_button,5,1)
 
         wid.setLayout(main_layout)
+
         # self.setGeometry(200,200,600,500)
         self.setFixedSize(self.size())
         self.show()
@@ -92,47 +98,37 @@ class Window(QtGui.QMainWindow):
     def click_login(self):
         login = Login(self)
         if login.exec_():   # here dialog will be shown and main script will wait for its closing (with no errors)
-            data = login.textName.text()
-            print data
-            # if (data ['userId'] != -1):
-            #     User.setId(data['userId'])
+            self.user.login(login.data['userId'])
+            self.update_button_state()
 
-    #state ID = 0
-    def init_login_state(self):
-        state = State(1, "grid")
+        else:
+            print ("error closing")
 
-        return state
-    #state ID=1
-    def init_login_state(self):
-        state = State(1, "grid")
+    def click_select_position(self):
+        pass
+    def click_capture_video(self):
+        pass
+    def click_load_video(self):
+        pass
 
-        # username = QtGui.QTextEdit(self)
-        # password = QtGui.QTextEdit(self)
-        # login_button = QtGui.QPushButton('Login')
-        #
-        #
-        # inner_lay = QtGui.QVBoxLayout()
-        # inner_lay.addWidget(username)
-        # inner_lay.addWidget(password)
-        # inner_lay.addWidget(login_button)
-        # # state.layout.setColumnMinimumWidth(3)
-        # # state.layout.setRowMinimumHeight(3)
-        #
-        # state.layout.setRowStretch(0,1)
-        # state.layout.setColumnStretch(0,2)
-        # state.layout.setColumnStretch(1,1)
-        # state.layout.setColumnStretch(2,2)
-        #
-        # state.layout.addLayout(inner_lay, 0,1)
-        #
+    def click_logout(self):
+        self.user.logout(self.user.getCurrentUser())
+        self.update_button_state()
 
+    def update_button_state(self):
+        if (self.user.isLoggedIn()):
+            self.login_button.setEnabled(False)
+            self.select_position.setEnabled(True)
+            self.capture_video.setEnabled(True)
+            self.logout_button.setEnabled(True)
+            self.load_video.setEnabled(True)
+        else:
+            self.login_button.setEnabled(True)
 
-
-
-
-        # state.add_widget(login_button, (1,4))
-
-        return state
+            self.select_position.setEnabled(False)
+            self.capture_video.setEnabled(False)
+            self.logout_button.setEnabled(False)
+            self.load_video.setEnabled(False)
 
     def mousePressEvent(self, QMouseEvent):
         print QMouseEvent.pos()
