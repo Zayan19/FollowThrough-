@@ -1,25 +1,29 @@
 import cv2
 import numpy as np
 from managers import WindowManager, CaptureManager
+from Ball_Detector import Ball_Detector
 
 class Ball_Tracker(object):
 
     def __init__(self, windowName, capture):
         self._windowManager = WindowManager(windowName, self.onKeypress)
         self._captureManager = CaptureManager(capture, self._windowManager, True)
+        self._ball_detector = Ball_Detector(None)
 
         # define a geneal orange color to help with detection
         self.orangeLower = (0,96,91)
         self.orangeUpper = (7,255,255)
 
 
+
+
     def run(self):
         self._windowManager.createWindow()
 
-        # Hard code the init ball coords... Will be found with ml
-        r, h, c, w = 570, 50, 1070, 50
+        # Find object coordinates using HaarCascade
+        track_window = self._find_basketball()
 
-        # Grab the first frame of the video to initialize tracking
+        # Grab the next frame of the video to initialize tracking
         self._captureManager.enterFrame()
         frame = self._captureManager.frame
         self._captureManager.exitFrame()
@@ -33,7 +37,6 @@ class Ball_Tracker(object):
 
         term_crit = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 1)
 
-        track_window = (c,r,w,h)
 
         while self._windowManager.isWindowCreated: 
             # Grab the next frame from the video
@@ -64,6 +67,20 @@ class Ball_Tracker(object):
             # Always listen for specific keypress events 
             # Triggered by onKeypress(keycode)!
             self._windowManager.processEvents()
+
+    def _find_basketball(self):
+        while True:
+            self._captureManager.enterFrame()
+            frame = self._captureManager.frame
+            frame = cv2.resize(frame, (0,0), fx=0.7, fy=0.7)
+
+            track_window = self._ball_detector.find_object(frame)
+            if track_window is not False:
+                self._captureManager.exitFrame()
+                break
+
+            self._captureManager.exitFrame()
+        return track_window
 
 
     def onKeypress(self, keycode):
