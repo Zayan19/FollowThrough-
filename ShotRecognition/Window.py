@@ -107,7 +107,10 @@ class Window(QtGui.QMainWindow):
     def click_capture_video(self):
         pass
     def click_load_video(self):
-        Ball_Tracker('Ball Tracker', cv2.VideoCapture('test_videos/3P_make.MOV')).run()
+        filename = QtGui.QFileDialog.getOpenFileName()
+        print filename
+        if filename:
+            Ball_Tracker('Ball Tracker', cv2.VideoCapture(str(filename))).run()
 
         pass
 
