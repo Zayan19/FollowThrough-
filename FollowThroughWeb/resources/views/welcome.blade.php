@@ -119,7 +119,7 @@
                 </div>
                 <div class="welcome">Welcome to</div>
                 <div class="title">
-                   <span class="bigF">&#6508;</span>ollowThroug<span class="">h</span>&#8210;
+                   <span class="bigF">f</span>ollowThroug<span class="">h</span>&#8210;
                 </div>
             </div>
         </div>
