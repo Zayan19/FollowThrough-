@@ -47,7 +47,7 @@ class ShotsController extends Controller
             }
         }
 
-        foreach ($shots as $i=>$s) {
+        for ($i = 0; $i < count($zones_total); $i++) {
             if ($zones_total[$i] == 0) {
                 $zone_avg[$i] = 0;
             } else {
