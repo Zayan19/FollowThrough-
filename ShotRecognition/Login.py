@@ -4,7 +4,7 @@ from Filters.LoginEventFilters import UsernameEventFilter, PasswordEventFilter
 
 
 # TODO: Doxygen
-class Login(QtGui.QDialog):
+class LoginWindow(QtGui.QDialog):
 
     style ='''
     QLabel

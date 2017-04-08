@@ -21,7 +21,7 @@ class CaptureManager(object):
         self._framesElapsed = 0
         self._fpsEstimate = None
 
-    @property  
+    @property
     def channel(self):
         return self._channel
 

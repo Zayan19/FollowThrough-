@@ -9,7 +9,7 @@ import cv2
 from Ball_Tracker import Ball_Tracker
 from PyQt4 import QtGui, QtCore
 from State import State
-from Login import Login
+from Login import LoginWindow
 from User import User
 
 
@@ -94,7 +94,7 @@ class Window(QtGui.QMainWindow):
         self.show()
 
     def click_login(self):
-        login = Login(self)
+        login = LoginWindow(self)
         if login.exec_():   # here dialog will be shown and main script will wait for its closing (with no errors)
             self.user.login(login.data['userId'])
             self.update_button_state()
@@ -103,7 +103,14 @@ class Window(QtGui.QMainWindow):
             print ("error closing")
 
     def click_select_position(self):
-        pass
+        position_selector = PositionSelectiorWindow(self)
+        if position_selector.exec_():   # here dialog will be shown and main script will wait for its closing (with no errors)
+            # self.user.login(login.data['userId'])
+            # self.update_button_state()
+            pass
+        else:
+            print ("error closing")
+
     def click_capture_video(self):
         pass
     def click_load_video(self):
@@ -112,7 +119,6 @@ class Window(QtGui.QMainWindow):
         if filename:
             Ball_Tracker('Ball Tracker', cv2.VideoCapture(str(filename))).run()
 
-        pass
 
     def click_logout(self):
         self.user.logout(self.user.getCurrentUser())
