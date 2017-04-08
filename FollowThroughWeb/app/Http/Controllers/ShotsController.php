@@ -21,15 +21,74 @@ class ShotsController extends Controller
             //TODO: return a view 
             $user_id = Auth::user()->id;
             $shots = User::find($user_id)->shots;
+            $avgs = ShotsController::calcAvgs($shots);
 
-            return response(array(
-                'shots' => $shots->toArray()
-            ), 200);
+            return view('shots')->with('shots', $shots)->with('avgs', $avgs);
         } else {
             //TODO: return a view styll
             return response(array('error'=> $user_id),200);
         }
     }
+
+    public function calcAvgs($shots)
+    {
+        // Compute Zone Averages
+
+        $num_shots = count($shots);
+        $zones_made = array_fill(0, 5, 0);
+        $zones_total = array_fill(0, 5, 0);
+        $zone_avg = array_fill(0, 5, 0);
+        foreach ($shots as $i=>$s) {
+            if ($s->made) {
+                $zones_made[$s->zone] ++;
+                $zones_total[$s->zone] ++;
+            } else {
+                $zones_total[$s->zone] ++;
+            }
+        }
+
+        foreach ($shots as $i=>$s) {
+            if ($zones_total[$i] == 0) {
+                $zone_avg[$i] = 0;
+            } else {
+                $zone_avg[$i] = ($zones_made[$i] / $zones_total[$i]) * 100;
+            }
+        }
+
+        // Compute Average Angles
+        $exit_avg = 0;
+        foreach ($shots as $i=>$s) {
+            $exit_avg += $s->exit_angle;
+        }
+        $exit_avg /= $num_shots;
+
+        $entry_avg = 0;
+        foreach ($shots as $i=>$s) {
+            $entry_avg += $s->entry_angle;
+        }
+        $entry_avg /= $num_shots;
+
+
+        // Compute Average Arc Height
+        $arc_height_avg = 0;
+        foreach ($shots as $i=>$s) {
+            $arc_height_avg += $s->arc_height;
+        }
+        $arc_height_avg /= $num_shots;
+
+        // Compute Average Shot Percentage
+        $shots_avg = 0;
+        foreach ($shots as $i=>$s) {
+            if ($s->made) {
+                $shots_avg ++;
+            }
+        }
+        $shots_avg = ($shots_avg / $num_shots) * 100;
+
+
+        return array($zone_avg, $exit_avg, $entry_avg, $arc_height_avg, $shots_avg);
+    }
+
 
     /**
      * Api to get the shot information of a requested user

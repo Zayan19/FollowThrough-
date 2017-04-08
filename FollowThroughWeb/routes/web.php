@@ -17,6 +17,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/dummy', 'HomeController@index');
 Route::get('/shots', 'ShotsController@index');
 
