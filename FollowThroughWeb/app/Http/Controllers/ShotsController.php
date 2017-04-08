@@ -18,7 +18,6 @@ class ShotsController extends Controller
     public function index()
     {
         if (Auth::check()) {
-            //TODO: return a view 
             $user_id = Auth::user()->id;
             $shots = User::find($user_id)->shots;
             $avgs = ShotsController::calcAvgs($shots);

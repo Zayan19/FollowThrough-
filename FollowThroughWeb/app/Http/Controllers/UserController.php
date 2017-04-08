@@ -22,7 +22,7 @@ class UserController extends Controller
 
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
             $user = User::where('email','=',$email)->first();
-            return response(array('userId'=>$user->id));
+            return response(array('userId'=>$user->id, 'email'=>$email));
         } else {
             return response(array('userId'=>-1));
         }
