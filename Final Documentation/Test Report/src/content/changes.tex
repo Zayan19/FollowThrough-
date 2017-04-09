@@ -1,0 +1,15 @@
+%*******************************************************
+% Changes After Testing
+%*******************************************************
+\pdfbookmark[1]{Changes After Testing}{Changes After Testing}
+\chapter{Changes After Testing}
+
+\setlength{\parindent}{0cm}
+
+Performing the unit testing and hardware testing illuminated some bugs that need fixing before the final demonstration. Some of the bugs that were caught during the unit testing were due to verification; we need to make sure that the data coming to both the Ball\_Tracker module, the Networking module and the Laravel server is valid data. There were also edge cases that were not considered such as as if the location of the ball does not change. These issues were realised thanks to the extensive test cases used and will be corrected for the future. 
+\\
+
+The fixes for all of these bugs are simple yet time consuming. We need to at every stage make sure that the incoming data is valid. This will be done using if statements to not only check if a variable is None, but also to make sure that the Networking module is not sending a floating point number when the server needs an integer. Exception handling may also be used to deal with possible unexpected user input that would cause errors in the application. 
+\\
+
+As for the hardware, all of the tests were a success. That being stated, changes to the hardware are still foreseeable - potential changes include moving the hardware to a circuit board. Also the hardware currently may prove challenging for the average user to setup. If it is not setup correctly, this will also result in unforeseeable errors during run-time. These issues will have to be resolved as the project moves forward. 

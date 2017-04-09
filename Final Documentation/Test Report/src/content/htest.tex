@@ -1,0 +1,21 @@
+%*******************************************************
+% System Testing
+%*******************************************************
+\pdfbookmark[1]{Hardware Testing}{Hardware Testing}
+\chapter{Hardware Testing}
+
+\setlength{\parindent}{0cm}
+
+\section{Basket Tracker}
+The basket tracker portion of the project is made up of three components: the Raspberry Pi computer, the distance sensor and the wifi module. All three of these components are assembled together with a bread board and will be mounted under the net. Ideally, if we had the resources, we would design a chip to fit right into the bread board, but the current setup functions all the same.
+\\
+The testing for this section will be more informal due to the fact that it's difficult to unit test hardware components.As one will notice, all three components are tightly integrated and cannot accurately be testing alone.
+
+\section{Distance Sensor}
+Testing the distance sensor is making sure it functions the way it is intended to function. The only way to test the distance sensor is to hook it up to the Rasbperry Pi and look at the output. There is a video on our GitHub repository of this being testing and the testing is a success. In the video, one will note the numbers on the computer monitor. These numbers are the distance between the range detectors and the basketball. When the basketball is "shot", the numbers temporarily stop, signifying the ball has gone through the net. The name of this video is \textit{Range\_Detector\_Test.mp4}.
+
+\section{Wifi Module}
+Testing the Wifi module is similar to testing the distance sensors; it can only be testing through the Raspberry Pi computer. The WiFi module gives the Raspberry Pi the ability to connect to local Wireless Hot-spots and connect to the Internet so as to create a post request with the data gathered from the Distance sensors. This has also been tested and is working. The proof of functionality is the test report on the Network\_Hardware module as seen in Section \ref{test_nethard}. This test requires the Raspberry Pi to have Internet access.
+
+\section{Raspberry Pi}
+Testing the Raspberry Pi is ensuring that the computer itself actually functions, and that we can get the distance sensors and the WiFi module functioning through the Raspberry Pi computer. The success of this test is seen in the fact that the tests for the distance sensors and the WiFi module were a success. This means that the Raspberry Pi is doing its job of computing whether the ball made it into the basket and sending that data to the Laravel server.

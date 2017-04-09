@@ -1,0 +1,77 @@
+%*******************************************************
+% Intro
+%*******************************************************
+\pdfbookmark[1]{Introduction}{Introduction}
+\chapter{Introduction}
+
+\setlength{\parindent}{0cm}
+
+\section{Revision Table}
+\begin{center}
+    \begin{tabular}{ l l l }
+         \textbf{Revision Number} & \textbf{Date} & \textbf{Description} \\
+         1 & March 25th 2017 & Starting the document.    
+         2 & April 8th 2017 & Making minor changes.
+    \end{tabular}
+\end{center}
+
+\section{List of Tables}
+\begin{center}
+    \begin{tabular}{| l | l |}
+    \hline
+         \textbf{Table Number} & \textbf{Name} \\ 
+         \hline
+         \ref{11_in} & 
+           \verb[Ball_Tracker Test Inputs
+           \\
+        \hline    
+        \ref{11_out} & 
+           \verb[Ball_Tracker Test Results
+          \\
+          \hline
+        \ref{12_in} & 
+           \verb[Ball_Tracker.angle Test Inputs
+           \\
+           \hline
+        \ref{12_out} & 
+           \verb[Ball_Tracker.angle Test Results
+           \\
+           \hline
+        \ref{21_in} & 
+           \verb[Networking_Python.post Test Inputs
+           \\
+          \hline 
+        \ref{21_out}& 
+           \verb[Networking_Python.post Test Results
+           \\
+           \hline
+        \ref{22_in} & 
+           \verb[Networking_Hardware.post Test Inputs
+           \\
+          \hline 
+        \ref{22_out} & 
+           \verb[Networking_Hardware.post Test Results
+           \\
+          \hline 
+        \ref{41_req} & 
+           \verb[Requirements
+           \\
+          \hline 
+        \ref{42_mod} & 
+           \verb[Modules
+           \\
+           \hline
+    \end{tabular}
+\end{center}
+
+
+\section{Purpose of the Document}
+This document is meant to showcase our testing of the FollowThrough- virtual basketball coach product. This document has been laid out so that it covers the three sections where testing will take place.
+
+\section{Scope of the Testing}
+The following tests will all be conducted on various edge cases and general cases to ensure that the product works on all levels prior to shipping. Most of the testing will be done as a case by case basis, as unit testing is mostly inapplicable with this product. The cases will cover different angles and various hardware placements while the unit testing will be done on a per function basis. For example the algorithm that calculates entry angle can and will be unit tested, whereas the angle at which the camera is positioned can only be tested by case.\\
+
+These tests are to be a tool to discover the limitations of the FollowThrough- product, not just test what we already know to be true. A general understanding of the product and some understanding of computer science content is assumed.
+
+\section{Organisation of the Document}
+The first section will cover unit testing. This section pertains to testing the software's algorithms and networking aspects of the website. The second section will cover the testing of the hardware, which is mostly in the form of scenario testing. The third section will cover the traceability of the tests in correlation to the requirements. Finally the fourth section will discuss the potential changes after the testing. 

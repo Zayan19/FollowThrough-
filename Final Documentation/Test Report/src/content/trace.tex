@@ -1,0 +1,52 @@
+%*******************************************************
+% Traceability
+%*******************************************************
+\pdfbookmark[1]{Traceability}{Traceability}
+\chapter{Traceability}
+The following section is to display the relationship between the test cases and the requirements for this project. With this the design decisions made for this project will be justified. 
+
+\setlength{\parindent}{0cm}
+
+\section {Requirements} \label{41_req}
+
+\begin{center}
+\begin{tabular}{| l | l | l |}
+    
+    \hline 
+    \textbf{Test}            & \textbf{Description}      & \textbf{Requirement} \\
+    \hline
+    \ref{test_capture}     &  Confirms video/webcam has been connected      & 6. Record Data    \\
+    \hline 
+    \ref{test_direction}       &  Confirms proper direction is being verified.  & 7. Give Feedback  \\
+    \hline 
+    \ref{test_angle}          &  Confirms proper angle is being computed       & 7. Give Feedback  \\
+    \hline  
+    \ref{test_netpy}   &  Confirms shot data can be sent to the server  & 5. Upload Data  \\
+    \hline   
+    \ref{test_nethard} &  Confirms shot data can be sent to the server  & 5. Upload Data  \\
+    \hline 
+   
+\end{tabular}
+\end{center}
+
+\section {Modules} \label{42_mod}
+This section lists the specific modules being tested.
+
+\begin{tabular}{|p{\dimexpr0.333\textwidth-2\tabcolsep-\arrayrulewidth\relax}|
+                p{\dimexpr0.333\textwidth-2\tabcolsep-\arrayrulewidth\relax}|
+                p{\dimexpr0.333\textwidth-2\tabcolsep-\arrayrulewidth\relax}|
+              }
+    \hline 
+    \textbf{Module name}                                       & \textbf{Test Type} & \textbf{Requirement}\\
+    \hline
+    Ball\_Tracker(is\_live, video\_path).begin\_capture()    &  Unit test &  6. Record Data and 7. Give Feedback\\
+    \hline 
+    Ball\_Tracker.direction (pts,direction,frames)        &  Unit test &  6. Record Data and 7. Give Feedback\\
+    \hline 
+    Ball\_Tracker.angle (x1,y1,x2,y2)                     &  Unit test &  6. Record Data and 7. Give Feedback\\
+    \hline 
+    Networking\_Python.post (url)                               &  Unit test &  1. Encrypt Data, 2. Decrypt Data, 4. Authenticate User, 8. Access Data and 9. Retrieve Data\\
+    \hline 
+    Networking\_Hardware.post (url)                             &  Unit test &  3. Store Results, 5. Upload Data, 6. Record Data, 7. Give Feedback and 10. Hold Connection\\
+    \hline 
+\end{tabular}
