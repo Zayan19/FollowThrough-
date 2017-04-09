@@ -1,0 +1,287 @@
+%*******************************************************
+% Unit Testing
+%*******************************************************
+
+
+
+\pdfbookmark[1]{Unit Testing}{Unit Testing}
+\chapter{Unit Testing}
+
+\setlength{\parindent}{0cm}
+
+\section{Ball\_Tracker module}
+The following will be manual testing of the functions in the Ball\_Tracker python module. The Ball\_Tracker class in the Ball\_Tracker module is instantiated as follows:
+\begin{verbatim}
+    Ball_Tracker(is_live, video_path)
+\end{verbatim}
+
+where \textit{is\_live} is a boolean specifying whether the user is streaming a video or recording live and \textit{video\_path} is a string specifying the path of the video, which of course is only required if \textit{is\_live} is set to \textit{False}.
+
+\subsection{Ball\_Tracker.begin\_capture()} \label{test_capture}
+The function begin\_capture() can capture from both the a camera device mounted on the user's computer or a supplied video, depending on the initiation of the class Ball\_Tracker.\\
+The method will be called as follows:
+\begin{verbatim}
+    Ball_Tracker(is_live, video_path).begin_capture()
+\end{verbatim}
+
+\subsubsection {Test Inputs} \label{11_in}
+\begin{tabular}{| l | l |} 
+    \hline 
+    \textbf{Test No.} & \textbf{Input Params} \\
+    \hline
+    1                 & \textit{is\_live} = True, \textit{video\_path} = None \\
+\hline 
+    2                 & \textit{is\_live} = True, \textit{video\_path} = 'test\_videos/FT\_make.MOV' \\
+    \hline
+    3                 & \textit{is\_live} = False, \textit{video\_path} = 'test\_videos/FT\_make.MOV' \\
+    \hline
+    4                 & \textit{is\_live} = False, \textit{video\_path} = 'test\_videos/FT\_miss.MOV' \\
+    \hline
+    5                 & \textit{is\_live} = False, \textit{video\_path} = None \\
+    \hline
+    6                 & \textit{is\_live} = False, \textit{video\_path} = '' \\
+    \hline
+\end{tabular}
+
+\subsubsection{Test Results} \label{11_out}
+\begin{tabular}{| l | l | c |}
+    \hline 
+    \textbf{Test No.}  & \textbf{Expected Results With Above Inputs}           & Pass? \\
+    \hline
+    1                  &  Successfully opened window showing output from webcam.    & \checkmark \\
+    \hline 
+    2                  &  Successfully opened window showing output from webcam.    & \checkmark \\
+    \hline 
+    3                  &  Successfully opened window showing output from specified video.    & \checkmark \\
+    \hline 
+    4                  &  Successfully opened window showing output from specified video.    & \checkmark \\
+    \hline 
+    5                  &  Error 'AssertionError: Must supply a video if not using webcam'    & \checkmark \\
+    \hline 
+    6                  &  Error 'AssertionError: Must supply a video if not using webcam'    & \checkmark \\
+    \hline 
+\end{tabular}
+
+\subsubsection{Notes on results}
+Everything passed as expected.
+
+\subsection{Ball\_Tracker.angle(x1, y1, x2, y2)} \label{test_angle}
+The function angle(x1, y1, x2, y2) is used to compute the angle between two given points. This is used to calculate both the exit angle (the angle of the ball as it leaves the player's hand) as well as the entry angle (the angle of the ball as it starts to descend and enter the basket). The method will be called as follows:
+\begin{verbatim}
+    angle(x1,y1,x2,y2)
+\end{verbatim}
+
+\subsubsection{Test Inputs} \label{12_in}
+
+\begin{tabular}{| l | l | l |}
+\hline
+   \textbf{Test No.}  & \textbf{Input Params} & \textbf{Expected Result} \\
+  \hline
+  1& x1 = 10, y1 = 100, x2 = 10, y2 = 200 & 90 \\
+  \hline
+  2 & x1 = 25, y1 = 90, x2 = 200, y2 = 500 & 67\\
+   \hline
+  3 & x1 = 20, y1 = 200, x2 = 150, y2 = 600 & 72\\
+   \hline
+  4 & x1 = 0, y1 = 350, x2 = 100, y2 = 400 & 27  \\
+   \hline
+5 & x1 = 0, y1 = 50, x2 = 300, y2 = 550 & 59 \\
+\hline
+\end{tabular}
+
+
+
+\subsubsection{Test Results} \label{12_out}
+\begin{tabular}{| l | l | c |}
+    \hline  
+    \textbf{Test No.}  & \textbf{Actual Result} & \textbf{Pass} \\
+    \hline
+    1                  & 90                     & \checkmark \\
+    \hline 
+    2                  & 67                     & \checkmark \\
+    \hline 
+    3                  & 72                     & \checkmark \\
+    \hline 
+    4                  & 27                     & \checkmark \\
+    \hline 
+    5                  & 59                     & \checkmark \\
+    \hline 
+\end{tabular}
+
+\subsubsection{Notes on results}
+The angle function was able to pass all test cases presented. It is worth mentioning that floating points were not accounted for. Instead the function simply converts and rounds the answer to the nearest integer value as more precision is currently unnecessary. 
+
+\subsection{Ball\_Tracker.direction(pts, direction, frames)} \label{test_direction}
+The function direction(pts, direction, frames), where pts is a large list of points (x,y coordinates) corresponding to the location of the ball on screen, the direction is the direction you are checking and the frames is the number of frames you are checking it for. Note the directions are represented by 4 numbers (0,1,2,3) which correspond to up,down,left and right respectively. This function is used to confirm if the ball is going in a certain direction before beginning the calculation of its angle. For instance, if the descending angle of the ball is desired and the player is facing left, the program will use this function to detect when the ball starts moving in the down left direction. 
+
+Method will be called as follows:
+\begin{verbatim}
+    Ball_Tracker(is_live, video_path).direction(pts, direction, frames)
+\end{verbatim}
+
+\subsubsection{Test Inputs} \label{13_in}
+\begin{tabular}{| l | l |}
+    \hline 
+    \textbf{Test No.} & \textbf{Input Params} \\
+    \hline
+    1                 & \textit{pts} = [(0,2),(0,4)], \textit{direction} = 0, \textit{frames} = 3 \\
+    \hline 
+     2                 & \textit{pts} = [(0,4),(0,2)], \textit{direction} = 0, \textit{frames} = 3 \\
+    \hline 
+    
+     3                & \textit{pts} = [(2,0),(4,0)], \textit{direction} = 1, \textit{frames} = 3 \\
+    \hline 
+    
+     4               & \textit{pts} = [(4,0),(2,0)], \textit{direction} = 1, \textit{frames} = 3 \\
+    \hline 
+    
+      5               & \textit{pts} = [(2,0),(4,0)], \textit{direction} = 2, \textit{frames} = 3 \\
+    \hline 
+    
+     6              & \textit{pts} = [(4,0),(2,0)], \textit{direction} = 2, \textit{frames} = 3 \\
+    \hline 
+    
+       7               & \textit{pts} = [(2,0),(4,0)], \textit{direction} = 3, \textit{frames} = 3 \\
+    \hline 
+    
+     8             & \textit{pts} = [(4,0),(2,0)], \textit{direction} = 3, \textit{frames} = 3 \\
+    \hline 
+\end{tabular}
+
+\subsubsection{Test Results} \label{13_out}
+\begin{tabular}{| l | l | c |}
+    \hline 
+    \textbf{Test No.}  & \textbf{Expected Results With Above Inputs}  & Pass? \\
+    \hline
+    1                  &  Returns True since 2 less than 4                                                       & \checkmark \\
+    \hline 
+     2                  &  Returns False since 4 not less than 2                                                       & \checkmark \\
+    \hline 
+     3                  &  Returns True since 4 greater than 2                                                       & \checkmark \\
+    \hline 
+     4                  &  Returns False since 2 is not less than 4                                                        & \checkmark \\
+    \hline 
+     5                  &   Returns True since 2 less than 4                                                       & \checkmark \\
+    \hline 
+     6                  &     Returns False since 4 not less than 2                                                    & \checkmark \\
+    \hline 
+     7                  &   Returns True since 4 greater than  2                                                         & \checkmark \\
+    \hline 
+     8                  &          Returns False since 2 is not less than 4                                               & \checkmark \\
+    \hline 
+\end{tabular}
+
+\subsubsection{Notes on results}
+The direction function was able to pass all test cases presented. However there might be other cases that are yet to be accounted for. For instance, while it is unrealistic, if the ball were to remain completely still at some point, the coordinates (0,0) would fill up the points list. And the right now it does not account for this edge case so the function can be improved upon. 
+
+\section{Networking module}
+The following will be manual testing of the post functions in the Networking python module. The Networking\_Python class is instantiated as follows:
+\begin{verbatim}
+    Networking_Python(entry_angle, exit_angle, arc_height, zone = 0)
+\end{verbatim}
+where \textit{entry\_angle}, a float, is the calculated angle at which the ball enters the net, \textit{exit\_angle}, a float, is the calculated angle at which the ball leaves the shooter's hands, \textit{arc\_height}, a float, is the maximum height of the arc travelled by the ball and \textit{zone}, an integer, is the zone of the court where the user is shooting from.
+\\
+
+The Networking\_Hardware class is instantiated as follows:
+\begin{verbatim}
+    Networking_Hardware(time_of_shot)
+\end{verbatim}
+
+where \textit{time\_of\_shot} is the time the shot that went in the basket was taken. The Arduino will only send this information to the server if the shot went in.
+
+
+\subsection{Networking\_Python.post(url)} \label{test_netpy}
+The function post will send the data the specified url that was received from the initialisation of the Networking\_Python. The user\_id is also a needed parameter of the post(url) method, although it is not in the method signature as it needs to be added at a later time using the \textit{set\_user\_id(user\_id)} method. The method will be called as follows:
+\begin{verbatim}
+    Networking_Python(entry_angle, exit_angle, arc_height, zone).post(url)
+\end{verbatim}
+
+\subsubsection{Test Inputs} \label{21_in}
+\emph{Note:} The url for every test will be \textbf{http://54.145.183.186/api/shot}, which is api url for adding a shot to the database.
+\\
+\\
+\begin{tabular}{| l | l |}
+    \hline 
+    \textbf{Test No.} & \textbf{Input Params} \\
+    \hline
+    1                 & \textit{user\_id} = 1, \textit{entry\_angle} = 45.0, \textit{exit\_angle} = 45.0, \textit{arc\_height} = 3.5, \textit{zone} = 0 \\
+    \hline 
+    2                 & \textit{user\_id} = 1, \textit{entry\_angle} = 45.0, \textit{exit\_angle} = 45.0, \textit{arc\_height} = 3.5 \\
+    \hline 
+    3                 & \textit{user\_id} = None, \textit{entry\_angle} = 45.0, \textit{exit\_angle} = 45.0, \textit{arc\_height} = 3.5, \textit{zone} = 1 \\
+    \hline 
+    4                 & \textit{user\_id} = 0, \textit{entry\_angle} = 37, \textit{exit\_angle} = 56, \textit{arc\_height} = 5, \textit{zone} = 3 \\
+    \hline 
+    5                 & \textit{user\_id} = 1, \textit{entry\_angle} = 43.43, \textit{exit\_angle} = None, \textit{arc\_height} = 4.27, \textit{zone} = 4 \\
+    \hline 
+    6                 & \textit{user\_id} = 1, \textit{entry\_angle} = 42.34545, \textit{exit\_angle} = 56.34345, \textit{arc\_height} = 3.54, \textit{zone} = 1 \\
+    \hline 
+    7                 & \textit{user\_id} = 1, \textit{entry\_angle} = None, \textit{exit\_angle} = None, \textit{arc\_height} = None, \textit{zone} = None \\
+    \hline 
+\end{tabular}
+
+\subsubsection{Test Results} \label{21_out}
+\begin{tabular}{| l | l | c |}
+    \hline 
+    \textbf{Test No.}  & \textbf{Expected Results With Above Inputs}   & Pass? \\
+    \hline
+    1                  & The data was successfully added to the server's database.                  & \checkmark \\
+    \hline 
+    2                  & The data was successfully added to the server's database.                  & \checkmark \\
+    \hline 
+    3                  & Error 'AssertionError: Must login before posting to server'                & \checkmark \\
+    \hline 
+    4                  & Error: Error page returned stating the user with $id=0$ cannot be found.   & \checkmark \\
+    \hline
+    5                  & Error: Error page returned stating the server could not find exit\_angle. &  \ding{55} \\
+    \hline 
+    6                  & The data was successfully added to the server's database.                  & \checkmark \\
+    \hline
+    7                  & Error: Error page returned stating the server could not find entry\_angle. &  \ding{55} \\
+    \hline 
+\end{tabular}
+
+\subsubsection{Notes on results}
+Test cases 5 and 7 failed the unit test for the same reason: the post(url) method is not enforcing that input parameters cannot be None, nor is the server ensuring that the data it receives is not NULL or empty.\\
+
+\subsection{Networking\_Hardware.post(url)} \label{test_nethard}
+The function post will send the data the specified url that was received from the initialisation of the Networking\_Hardware. The user\_id is also a needed parameter of the post(url) method, although it is not in the method signature as it needs to be added at a later time using the \textit{set\_user\_id(user\_id)} method. The method will be called as follows:
+\begin{verbatim}
+    Networking_Python(time_of_shot).post(url)
+\end{verbatim}
+
+\subsubsection{Test Inputs} \label{22_in}
+\emph{Note:} The url for every test will be \textbf{http://54.145.183.186/api/shot}, which is api url for adding a shot to the database.
+\\
+\\
+\begin{tabular}{| l | l |} 
+    \hline 
+    \textbf{Test No.} & \textbf{Input Params} \\
+    \hline
+    1                 & time\_of\_shot = '2017-03-26 14:44:04'\\
+    \hline 
+    2                 & time\_of\_shot = '2017-26-03 14:44:04'\\
+    \hline
+    3                 & time\_of\_shot = ''\\
+    \hline
+    4                 & time\_of\_shot = None\\
+    \hline 
+\end{tabular}
+
+\subsubsection{Test Results} \label{22_out}
+\begin{tabular}{| l | l | c |}
+    \hline 
+    \textbf{Test No.}  & \textbf{Expected Results With Above Inputs}   & Pass? \\
+    \hline
+    1                  & The data was successfully added to the server's database.                  & \checkmark \\
+    \hline 
+    2                  & Error: Error page returned stating the time\_of\_shot is an invalid time.  &  \ding{55}\\
+    \hline 
+    3                  & Error: Error page returned stating the time\_of\_shot is an invalid time.  & \ding{55} \\
+    \hline 
+    4                  & Error: Error page returned stating the time\_of\_shot is an invalid time.  & \ding{55} \\
+    \hline 
+\end{tabular}
+
+\subsubsection{Notes on results}
+Test cases 2 - 4 failed due to the fact that the post(url) method is not ensuring that the recieved time is a valid time. A valid time in this case is YYYY-MM-DD HH:mm:ss, and the time cannot be None or an empty string.
