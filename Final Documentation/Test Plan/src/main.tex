@@ -1,0 +1,492 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{adjustbox}
+
+\usepackage{xcolor} % for different colour comments
+\usepackage{tabto}
+\usepackage{mdframed}
+\mdfsetup{nobreak=true}
+\usepackage{xkeyval}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=red,
+    urlcolor=blue
+}
+\usepackage[skip=2pt, labelfont=bf]{caption}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\graphicspath{ {image/} }
+
+
+\begin{document}
+
+\title{\textbf{FollowThrough Application \\
+ Test Plan - Revision 1}}
+\author{
+  Philip Habib\\ \texttt{habibp} \and Djordje Petrovic \\ \texttt{petrod} \and Zayan Imtiaz\\ \texttt{imtiaz} \and George Plukov\\ \texttt{plukovga}
+}
+
+\date{April 2016}
+
+\maketitle
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Overview}
+The purpose of this document is to provide a plan for testing our FollowThrough application. The following outline gives a description of what is covered in this document. 
+
+\begin{itemize}
+    \item A proof of concept test is detailed in section 2. 
+    \item System testing is described in section 3. 
+    \item Software requirements specification testing is described in section 4. 
+    \item A time line for the Test Plan is presented in section 5. 
+\end{itemize}
+
+\section{Proof of Concept Testing}
+Before being able to do any other testing, there needs to be a proof of concept test. This test will be in place to ensure the project at hand is feasible in the first place.
+
+\subsection{Significant Risks}
+To have this project be successful we would first need to overcome a small number of major risks. Those risks are as follows:
+\begin{enumerate}
+    \item The software needs to be able to successfully track the ball no matter where it goes. This is the basis of the entire system and if it doesn't work the project is no longer feasible.
+    \item The next most important risk to overcome would be making sure that the hardware is well protected in its environment. This could either be inclement weather or physical objects making contact with the gear.
+    \item Lastly, the software needs to be able to successfully upload/update any information over a server. If the server is to crash or the connection becomes disconnected the software must retain the information in a different way.
+\end{enumerate}
+
+\newpage
+\subsection{Demonstration Plan}
+The plan for the demonstration is to present a video of one of the developers playing basketball and have the software track the ball. The cases for this demonstration will be as follows:
+\begin{itemize}
+    \item Starting a few feet away from the net, being perpendicular to it. 
+    \item Make a few shots, some are intentionally missed and some are intentionally made.
+\end{itemize}
+
+
+This demonstration is done this way to show that the ball can be tracked properly, even though it will be losing sight of the ball for a fraction of a second as it passes through the hoop or off screen.
+
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 2.2.1} & {\bf Proof of Concept}\\
+\midrule
+\textbf{Description:} & This test is meant to identify if the major risks can be overcome \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Proof of Concept (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & This test will pass upon the successful demonstration of the project \\[0.3\baselineskip]
+\bottomrule
+\end{tabularx}
+
+\newpage
+\section{System Testing}
+The system testing will be composed of three major sections. There will be the OpenCV/Python program testing that ensures the program processes the video correctly. There will the hardware testing which will ensure the Camera and Rasberry Pi is functioning correctly. Finally there will be website testing. Test cases for each of these sections will be detailed below. 
+
+\subsection {OpenCV}
+The following tests will ensure the OpenCV/Python program is functioning correctly. 
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 3.1.1} & {\bf Recognize Basketball}\\
+\midrule
+\textbf{Description:} & This test will consist of the OpenCV program detecting a basketball if it is within the web cam's view. This is a functional requirement. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Initial State:} & A basketball is within the camera view. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & This test passes any standard basketball placed in front of the webcam can be immediately detected by the OpenCV/Python program. \\[0.3\baselineskip]
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 3.1.2} & {\bf Basket Ball Tracking Test}\\
+\midrule
+\textbf{Description:} & This test will consist of the OpenCV program tracking the basketball by highlighting it as it moves around court. This is a functional requirement.\\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Initial State:} & The user is holding the basketball. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & This test passes if the ball can be tracked regardless of speed and direction when the user shoots it as long as it's within view of the camera.  \\[0.3\baselineskip]
+\bottomrule
+\end{tabularx}
+
+
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 3.1.3} & {\bf Arc Tracking Test}\\
+\midrule
+\textbf{Description:} & This test will consist of the OpenCV program tracking the basketball's arc by forming a line of its trajectory as it moves around court. This is a functional requirement. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Initial State:} & The user is holding the basketball. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & This test passes if the Open CV program correctly follows the ball's arc and forms a line in the program that indicates the arc of the shot.  \\[0.3\baselineskip]
+\end{tabularx}
+
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 3.1.4} & {\bf Arc Analyzing Test}\\
+\midrule
+\textbf{Description:} & This test will consist of the Python program processing the user's shot arc made by shooting a basketball and comparing it to the an ideal shot arc. This is a functional requirement. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Initial State:} & The program receives a finished arc of the user's shot in the form of a graph. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & This test passes if the Python program correctly compares the user's shot arc with the ideal basketball shot arc and displays feedback regarding the differences as a line of best fit.  \\[0.3\baselineskip]
+\bottomrule
+\end{tabularx}
+
+
+\newpage
+\subsection {Web Application}
+The following tests ensure that the web application, and the server it's running on, is functioning properly.
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 3.2.1 } & {\bf Upload data to server test}\\
+\midrule
+\textbf{Description:} & This test will consist of using GET and POST methods to upload sample data to the web server. This is a functional requirement. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Initial State:} & Sample data is present locally. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & This test passes if the sample data is successfully uploaded to the server.\\[0.3\baselineskip]
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 3.2.2 } & {\bf User can register to the web application}\\
+\midrule
+\textbf{Description:} & This test will consist of using GET and POST methods to ensure users are saved in the system. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Initial State:} & User is not registered and cannot log in. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & This test passes if the the sample user is successfully saved to the server.\\[0.3\baselineskip]
+\bottomrule
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 3.2.3 } & {\bf User can log in}\\
+\midrule
+\textbf{Description:} & This test will consist of validating that the login process to the web application works. This is a functional requirement. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Initial State:} & User access the website and is not logged in. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & This test passes if the user can successfully log in. \\[0.3\baselineskip]
+\end{tabularx}
+
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 3.2.4 } & {\bf User can retrieve data}\\
+\midrule
+\textbf{Description:} & This test will consist of validating whether or not the user can retrieve the data sent from the OpenCV application. This is a functional requirement.z\\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Initial State:} & There is no data present on the web application. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & This test passes if the user can view the recorded data of their shot on the web application. \\[0.3\baselineskip]
+\bottomrule
+\end{tabularx}
+
+
+
+\newpage
+\subsection {Hoop Hardware}
+The hardware going underneath the net will be primarily comprised of a Raspberry Pi, a Raspberry Pi (RPi) camera module and a infrared distance measurer. This is a second camera, separate from the main camera.
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 3.3.1} & {\bf Raspberry Pi setup test}\\
+\midrule
+\textbf{Description:} & This test will consist of a user attempting to attach the RPi device to the rim.  This is a functional requirement. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & User \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Initial State:} & The user has not yet set up the device. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & This test passes if the user can successful set up the RPi and have it upload data to the web server.  \\[0.3\baselineskip]
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 3.3.2} & {\bf Player Position Tracking Test}\\
+\midrule
+\textbf{Description:} & This test will include a player standing on the court and moving around.  This is a functional requirement. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Initial State:} & The tester is holding the basketball on the court, in view of the hoop camera. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & This pass tests if the tester's location can be tracked within a range of about 1 foot.  \\[0.3\baselineskip]
+\bottomrule
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 3.3.3 } & {\bf Scored Basket Test}\\
+\midrule
+\textbf{Description:} & This test will include a player shooting the ball through the hoop.  This is a functional requirement. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Initial State:} & The tester is standing on the court and shooting a ball. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & This test passes if the user's shot has scored and was tracked properly by the IR sensor.  \\[0.3\baselineskip]
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 3.3.4 } & {\bf Missed Basket Test}\\
+\midrule
+\textbf{Description:} & This test will include a player shooting the ball at the hoop but not scoring any points.  This is a functional requirement. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Initial State:} & The tester is standing on the court and shooting a ball. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & This test passes if the user's shot has scored and was tracked properly by the IR sensor.  \\[0.3\baselineskip]
+\bottomrule
+\end{tabularx}
+
+
+\newpage
+\section{Requirements Testing}
+After the project is implemented and tested, the functional and non-functional requirements are to be examined. The functional requirements in this case will all be tested during the general system testing whereas the non-functional requirements will have to be tested separately.
+
+\subsection{Functional Requirements Testing}
+All of the functional requirements are tested in the System Testing section. The trace between the tests and the requirements are listed below:
+\begin{itemize}
+    \item \textbf{1. Encrypt Data:} This will be tested by entering the password and examining what was actually stored.
+    \item \textbf{2. Decrypt Data:} This will be tested by seeing if passwords which are known to be correct are accepted.
+    \item \textbf{3. Store Results:} This will simply be tested by ensuring all data recorded will be stored on the cloud.
+    \item \textbf{4. Authenticate User:} Similarly to encrypt and decrypt data this will simply be tested by trying to log in with a user name and password combination which is known to be working.
+    \item \textbf{5. Upload Data:} This one will be easily tested together with Storing Results.
+    \item \textbf{6. Record Data:} This one will be tested together with Upload Data and Storing Results.
+    \item \textbf{7. Give Feedback:} Requirement number seven will be tested on the court and on the computer. The tests will consists of case by case testing (i.e. If you stand 3 feet away from the net, we expect the entry angle should be X, but it's actually Y).
+    \item \textbf{8. Access Data:} Requirement number eight will be tested by logging in to the web site and checking to see if the data uploaded reflects the data gathered earlier in the testing.
+    \item \textbf{9. Retrieve Data:} This requirements will be easily tested as it is a part of the Access Data requirement.
+\end{itemize}
+
+\subsection{Non-Functional Requirements Testing}
+The test cases for the non-functional requirements are as follows:
+\\
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 4.2.1} & {\bf Look and Feel Requirements}\\
+\midrule
+\textbf{Description:} & This test will consist of someone looking at the final product and reviewing the outlook. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Aesthetic (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & This test passing is contingent on the opinion of various testers. If there is a unanimous agreement by the developers on the layout, the program has succeeded. \\[0.3\baselineskip]
+\bottomrule
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 4.2.2} & {\bf Ease of Use Requirements}\\
+\midrule
+\textbf{Description:} & This test is being done to ensure that the product can be used by a variety of people. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & The condition to pass this test is having multiple users agree that it is easy to use. \\[0.3\baselineskip]
+\bottomrule
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 4.2.3} & {\bf Learning Requirements}\\
+\midrule
+\textbf{Description:} & This test is meant to identify how easy the system is to learn. It will be done by having someone outside the developers try it out for the first time.\\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Random Person \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & To pass this test the user at hand must be able to get a quick grasp of how the program works. \\[0.3\baselineskip]
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 4.3.4} & {\bf Speed and Latency Requirements}\\
+\midrule
+\textbf{Description:} & This test is in place to ensure that the user is given feedback in a timely manner. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & This test is passed when the software returns feedback to the tester within 0.5-4 seconds (This number was chosen semi-randomly as it felt like this time range is not long enough to frustrate someone, but it also gives the program enough buffer time). \\[0.3\baselineskip]
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 4.3.5} & {\bf Precision or Accuracy Requirements}\\
+\midrule
+\textbf{Description:} & This test is supposed to find out how accurate the feedback the software provides is. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & For the software to pass the feedback must be approved by the testers. \\[0.3\baselineskip]
+\bottomrule
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 4.3.6} & {\bf Capacity Requirements}\\
+\midrule
+\textbf{Description:} & The software will eventually accommodate multiple people. \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & This software passes the test if it works properly with more than one person on the court. \\[0.3\baselineskip]
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 4.3.7} & {\bf Multi-Platform Requirements}\\
+\midrule
+\textbf{Description:} &  This test is meant to find out whether or not the software functions over multiple operating systems.\\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & This test passes if it works on Windows 10, Linux and OSX. \\[0.3\baselineskip]
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{p{2cm}p{9cm}}
+\toprule 
+{\bf Test 4.3.8} & {\bf Language Requirements}\\
+\midrule
+\textbf{Description:} &  This test is meant to ensure proper grammar and spelling is used throughout the application.\\[0.3\baselineskip]
+                      &                     \\
+\textbf{Type:} & Functional (manual)   \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Tester(s):} & Developers \\[0.3\baselineskip]
+                      &                     \\
+\textbf{Pass:} & This test passes if all of the grammar and spelling in the application is correct. \\[0.3\baselineskip]
+\bottomrule
+\end{tabularx}
+\newpage
+
+\section{Error Testing}
+Error testing will occur throughout the system testing. In any case where the system is being tested, error testing will happen immediately afterwards to ensure nothing is over-looked.
+
+\subsection{The Hardware}
+Tests will be in place to ensure that the disconnection of any piece of hardware does not result in a total loss. This will be done by intentionally disconnecting pieces of equipment to see how the application will respond and what needs to be fixed. Those tests will be as follows:
+\begin{itemize}
+    \item If the camera on the computer shuts off, the application is to alert the user. This will be tested by purposely disconnecting the camera.
+    \item If the sensor on the net becomes disconnected, the application is once again meant to alert the user. This will again be done by purposely disconnecting it.
+\end{itemize}
+
+\subsection{The Web Interface}
+Tests on the web interface will be largely done case-by-case (meaning that we will create scenarios and see how the interface reacts in the said scenarios). This will likely consist of:
+\begin{itemize}
+    \item We will test what happens when somebody who has not yet registered tries to sign in by entering a user name and password combination which does not already exist.
+    \item We will test what happens when the user has already registered but they are trying to register again with the same details. This will be done by trying to register with information which is already in the server.
+    \item What happens when the user accidentally resets their password will also be tested, by doing just that.
+    \item Lastly, a test will be in place to see what happens when the user enters their information incorrectly. This will also be done just by doing the action.
+\end{itemize}
+
+\subsection{The Application}
+The tests made in this section will be focused on the errors the user can make while using the application on the court. Many of these tests will be scenario tests like most of the testing done previously. The aforementioned tests are as follows:
+\begin{itemize}
+    \item User entering the wrong log in information will be tested by doing just that.
+    \item The user no angling the camera properly will be tested by performing the action, then the results will be recorded to see how it can be fixed.
+    \item The user playing with more than one ball will also be tested by playing with more than one ball.
+    \item Testing will be done to see how much the user shaking the recording device could affect the results.
+    \item Every other algorithm related test will be performed in the form of unit testing. This will consist of any possible edge cases that exist.
+\end{itemize}
+
+
+\newpage
+\section{Time line}
+\label{sec:timeline}
+This document is structured to roughly match the anticipated chronology of testing.  A proposed testing time line is given below:
+
+\begin{table}[ht]
+\caption{Testing time line} \label{tab:timeline}
+\begin{tabularx}{\textwidth}{p{2.5cm}p{3cm}X}
+\toprule {\bf Completion Date} & {\bf Responsible Party} & {\bf Task}\\
+\midrule
+11/15/2016 & George Plukov & Record all video test cases.\\[0.3\baselineskip]
+
+11/20/2016 & Development Team & Demo #1, test system with basic basketball shot videos and arc tracking \\[0.3\baselineskip]
+
+11/25/2016 & Development Team & Create python script to automatically test opencv program with all test videos\\[0.3\baselineskip]
+
+1/15/2017 & Philip Habib & Begin testing of web application post/get methods\\[0.3\baselineskip]
+
+1/20/2017 & George Plukov & Run initial tests for player position testing (Hoop Camera)\\[0.3\baselineskip]
+
+2/20/2017 & George Plukov & Begin testing basket IR sensor \\[0.3\baselineskip]
+
+03/20/2017 & Development team & Completion of all web testing\\[0.3\baselineskip]
+
+03/20/2017 & Development team & Completion of hoop hardware testing\\[0.3\baselineskip]
+04/07/2017 & Development team & Ensure all test cases pass for the three different components\\[0.3\baselineskip]
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\end{document}
