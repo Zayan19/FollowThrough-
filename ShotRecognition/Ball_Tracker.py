@@ -58,20 +58,20 @@ class Ball_Tracker(object):
             ret, track_window = cv2.meanShift(back_project, track_window, term_crit)
             (x,y,w,h) = track_window
 
-            self.points.appendleft( (x+w/2, y+h/2) )
+            self.points.appendleft( (int(x+w/2), int(y+h/2)) )
 
             # Draw a rectangle around the ball
             cv2.rectangle(frame, (x,y), (x+w, y+h), 255, 2)
-            for i in xrange(1, len(self.points)):
-        		# if either of the tracked points are None, ignore
-        		# them
-        		if pts[i - 1] is None or pts[i] is None:
-        			continue
+            for i in range(1, len(self.points)):
+                # if either of the tracked points are None, ignore
+                # them
+                if self.points[i - 1] is None or self.points[i] is None:
+                    continue
+                # otherwise, compute the thickness of the line and
+                # draw the connecting lines
+                thickness = int(np.sqrt(32 / float(i + 1)) * 2.5)
+                cv2.line(frame, self.points[i - 1], self.points[i], (0, 0, 255), thickness)
 
-        		# otherwise, compute the thickness of the line and
-        		# draw the connecting lines
-        		# thickness = int(np.sqrt(args["buffer"] / float(i + 1)) * 2.5)
-        		cv2.line(frame, self.points[i - 1], self.points[i], (0, 0, 255), 1)
             # Set the frame to be displayed
             self._captureManager.frame = frame
 
@@ -86,9 +86,12 @@ class Ball_Tracker(object):
 
     def _find_basketball(self):
         while True:
-            self._captureManager.enterFrame()
-            frame = self._captureManager.frame
+            entered = self._captureManager.enterFrame()
 
+            if not entered:
+                break
+
+            frame = self._captureManager.frame
             track_window = self._ball_detector.find_object(frame)
 
             if track_window is not False:
