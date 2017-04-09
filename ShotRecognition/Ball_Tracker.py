@@ -13,6 +13,7 @@ class Ball_Tracker(object):
         self._captureManager = CaptureManager(capture, self._windowManager, True)
         self._ball_detector = Ball_Detector("ball_classifier.xml")
 
+        self._paused = False
         # define a geneal orange color to help with detection
         self.orangeLower = (0,96,91)
         self.orangeUpper = (7,255,255)
@@ -43,6 +44,10 @@ class Ball_Tracker(object):
 
 
         while self._windowManager.isWindowCreated:
+            # Handle Video Pausing
+            while self._paused:
+                self._windowManager.processEvents()
+
             # Grab the next frame from the video
             entered = self._captureManager.enterFrame()
 
@@ -122,6 +127,10 @@ class Ball_Tracker(object):
         # esc
         elif keycode == 27:
             self._windowManager.destroyWindow()
+
+        elif keycode == ord('p'):
+            self._paused = not self._paused
+
 
 if __name__ == '__main__':
    Ball_Tracker('Ball Tracker', cv2.VideoCapture('test_videos/3P_make.MOV')).run()
