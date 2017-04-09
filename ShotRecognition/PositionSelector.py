@@ -1,6 +1,7 @@
-from PyQt4 import QtGui
+from PyQt4 import QtGui, QtCore
+
 from Networking import Login_Handler
-from Filters.LoginEventFilters import UsernameEventFilter, PasswordEventFilter
+
 
 
 # TODO: Doxygen
@@ -21,17 +22,16 @@ class PositionSelectorWindow(QtGui.QDialog):
         # self.click_handler = ClickHandler()
 
         # Define filters
-        self.login_filter = UsernameEventFilter()
-        self.password_filter = PasswordEventFilter()
+        # self.login_filter = UsernameEventFilter()
+        # self.password_filter = PasswordEventFilter()
 
         # Login login_label
-        self.title_label = QtGui.QLabel("Choose Position")
-        self.title_label.setStyleSheet(self.style)
+        # self.title_label = QtGui.QLabel("Choose Position")
+        # self.title_label.setStyleSheet(self.style)
         # main_layout = QtGui.QGridLayout()
 
-        self.label = QtGui.QLabel()
-        self.pixmap = QtGui.QPixmap('resources/basketball_halfcourt.gif')
-        self.label.setPixmap(self.pixmap)
+        self.bball_label = BasketballLabel(self,QtCore.QPoint(100,330), 30)
+
 
         # login button
         # self.buttonLogin = QtGui.QPushButton('Login', self)
@@ -39,14 +39,38 @@ class PositionSelectorWindow(QtGui.QDialog):
 
 
         layout = QtGui.QGridLayout(self)
+        # self.label.lower()
 
-        layout.addWidget(self.title_label,0,0)
-        layout.addWidget(self.label,0,0)
-    def mousePressEvent(self, QMouseEvent):
-        cursor = QtGui.QCursor()
+        # layout.addWidget(self.title_label,0,0)
+        layout.addWidget(self.bball_label,0,0)
 
-        print QMouseEvent.pos()
 
-    def mouseReleaseEvent(self, QMouseEvent):
-        cursor = QtGui.QCursor()
-        print cursor.pos()
+class BasketballLabel(QtGui.QLabel):
+
+    def __init__(self, parent=None, startingPosition=QtCore.QPoint(100,100), radius= 30):
+        super(BasketballLabel, self).__init__(parent)
+        self.playerPosition = startingPosition
+        self.radius = radius
+
+
+        self.mousePressEvent = self.mousePress
+        self.image = QtGui.QImage('resources/basketball_halfcourt.gif')
+
+
+
+    def paintEvent(self,event):
+        painter=QtGui.QPainter()
+        painter.begin(self)
+        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        painter.drawImage(0, 0, self.image)
+        painter.setPen(QtGui.QPen(QtCore.Qt.red,3))
+        painter.drawEllipse(self.playerPosition.x() - self.radius/2,self.playerPosition.y() - self.radius/2, self.radius,self.radius)
+        self.setPixmap(QtGui.QPixmap('resources/basketball_halfcourt.gif'))
+
+        painter.end()
+
+
+    def mousePress(self, event):
+        self.playerPosition = event.pos()
+        self.update()
+        print event.pos()

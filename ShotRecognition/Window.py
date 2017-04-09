@@ -141,12 +141,12 @@ class Window(QtGui.QMainWindow):
             self.logout_button.setEnabled(False)
             self.load_video.setEnabled(False)
 
-    def mousePressEvent(self, QMouseEvent):
-        print QMouseEvent.pos()
-
-    def mouseReleaseEvent(self, QMouseEvent):
-        cursor =QtGui.QCursor()
-        print cursor.pos()
+    # def mousePressEvent(self, QMouseEvent):
+    #     print QMouseEvent.pos()
+    #
+    # def mouseReleaseEvent(self, QMouseEvent):
+    #     cursor =QtGui.QCursor()
+    #     print cursor.pos()
 
 
 if __name__ == '__main__':
