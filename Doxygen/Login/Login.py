@@ -88,4 +88,3 @@ class LoginWindow(QtGui.QDialog):
                 self.accept()
         else:
             QtGui.QMessageBox.warning(self, 'Error', 'Please enter your username and password!')
-
