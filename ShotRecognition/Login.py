@@ -17,7 +17,7 @@ class LoginWindow(QtGui.QDialog):
     # TODO: Doxygen
     # constructor
     def __init__(self, parent=None):
-        super(Login, self).__init__(parent)
+        super(LoginWindow, self).__init__(parent)
 
         ''' Define all gui elements '''
         # Define filters
