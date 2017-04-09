@@ -35,7 +35,7 @@ class CaptureManager(object):
     def frame(self):
         if self._enteredFrame and self._frame is None:
             _, self._frame = self._capture.retrieve()
-        return self._frame
+        return cv2.resize(self._frame, (0,0), fx=0.7, fy=0.7)
 
     @frame.setter
     def frame(self, frame):
@@ -59,6 +59,7 @@ class CaptureManager(object):
 
         if self._capture is not None:
             self._enteredFrame = self._capture.grab()
+        return self._enteredFrame
 
     def exitFrame(self):
         """Draw to the window. Write to files. Release the frame"""
@@ -101,9 +102,9 @@ class CaptureManager(object):
     def writeImage(self, filename):
         """Write the next exited frame to an image file"""
         self._imageFileName = filename
-# v2.VideoWriter_fourcc('I', '4', '2', '0')):
     def startWritingVideo(self, filename,
-            encoding = cv2.cv.CV_FOURCC(*'I420')):
+            # encoding = cv2.cv.CV_FOURCC(*'I420')):
+            endoding = cv2.VideoWriter_fourcc('I', '4', '2', '0')):
         """Start writing exited frames to a video file"""
         self._videoFileName = filename
         self._videoEncoding = encoding
