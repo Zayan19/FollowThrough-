@@ -2,6 +2,7 @@ import sys
 sys.path.append('/usr/local/lib/python2.7/site-packages')
 import cv2
 import numpy as np
+from collections import deque
 from managers import WindowManager, CaptureManager
 from Ball_Detector import Ball_Detector
 
@@ -15,6 +16,10 @@ class Ball_Tracker(object):
         # define a geneal orange color to help with detection
         self.orangeLower = (0,96,91)
         self.orangeUpper = (7,255,255)
+
+        # define list of points
+        self.points = deque(maxlen=32)
+
 
     def run(self):
         self._windowManager.createWindow()
@@ -53,9 +58,20 @@ class Ball_Tracker(object):
             ret, track_window = cv2.meanShift(back_project, track_window, term_crit)
             (x,y,w,h) = track_window
 
+            self.points.appendleft( (x+w/2, y+h/2) )
+
             # Draw a rectangle around the ball
             cv2.rectangle(frame, (x,y), (x+w, y+h), 255, 2)
+            for i in xrange(1, len(self.points)):
+        		# if either of the tracked points are None, ignore
+        		# them
+        		if pts[i - 1] is None or pts[i] is None:
+        			continue
 
+        		# otherwise, compute the thickness of the line and
+        		# draw the connecting lines
+        		# thickness = int(np.sqrt(args["buffer"] / float(i + 1)) * 2.5)
+        		cv2.line(frame, self.points[i - 1], self.points[i], (0, 0, 255), 1)
             # Set the frame to be displayed
             self._captureManager.frame = frame
 
@@ -74,6 +90,7 @@ class Ball_Tracker(object):
             frame = self._captureManager.frame
 
             track_window = self._ball_detector.find_object(frame)
+
             if track_window is not False:
                 self._captureManager.exitFrame()
                 break

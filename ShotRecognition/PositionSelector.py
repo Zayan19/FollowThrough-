@@ -30,7 +30,7 @@ class PositionSelectorWindow(QtGui.QDialog):
         # self.title_label.setStyleSheet(self.style)
         # main_layout = QtGui.QGridLayout()
 
-        self.bball_label = BasketballLabel(self,QtCore.QPoint(100,330), 30)
+        self.bball_label = BasketballLabel(self,QtCore.QPoint(100,330), 10)
 
 
         # login button
@@ -47,7 +47,7 @@ class PositionSelectorWindow(QtGui.QDialog):
 
 class BasketballLabel(QtGui.QLabel):
 
-    def __init__(self, parent=None, startingPosition=QtCore.QPoint(100,100), radius= 30):
+    def __init__(self, parent=None, startingPosition=QtCore.QPoint(100,100), radius= 10):
         super(BasketballLabel, self).__init__(parent)
         self.playerPosition = startingPosition
         self.radius = radius
@@ -57,13 +57,12 @@ class BasketballLabel(QtGui.QLabel):
         self.image = QtGui.QImage('resources/basketball_halfcourt.gif')
 
 
-
     def paintEvent(self,event):
         painter=QtGui.QPainter()
         painter.begin(self)
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
         painter.drawImage(0, 0, self.image)
-        painter.setPen(QtGui.QPen(QtCore.Qt.red,3))
+        painter.setPen(QtGui.QPen(QtCore.Qt.red,4))
         painter.drawEllipse(self.playerPosition.x() - self.radius/2,self.playerPosition.y() - self.radius/2, self.radius,self.radius)
         self.setPixmap(QtGui.QPixmap('resources/basketball_halfcourt.gif'))
 
