@@ -10,6 +10,7 @@ from Ball_Tracker import Ball_Tracker
 from PyQt4 import QtGui, QtCore
 from State import State
 from Login import LoginWindow
+from PositionSelector import PositionSelectorWindow
 from User import User
 
 
@@ -74,6 +75,7 @@ class Window(QtGui.QMainWindow):
 
         self.buttons = [self.login_button, self.select_position, self.capture_video, self.logout_button,self.load_video]
 
+        self.user.login('5')
 
         self.update_button_state()
 
@@ -103,7 +105,7 @@ class Window(QtGui.QMainWindow):
             print ("error closing")
 
     def click_select_position(self):
-        position_selector = PositionSelectiorWindow(self)
+        position_selector = PositionSelectorWindow(self)
         if position_selector.exec_():   # here dialog will be shown and main script will wait for its closing (with no errors)
             # self.user.login(login.data['userId'])
             # self.update_button_state()

@@ -19,6 +19,7 @@ class LoginWindow(QtGui.QDialog):
     def __init__(self, parent=None):
         super(Login, self).__init__(parent)
 
+        ''' Define all gui elements '''
         # Define filters
         self.login_filter = UsernameEventFilter()
         self.password_filter = PasswordEventFilter()
@@ -49,15 +50,15 @@ class LoginWindow(QtGui.QDialog):
     # TODO: Doxygen
     # handles loging submission
     def handleLogin(self):
+        ''' Confirm that the user has entered a username '''
         if (len(self.textName.text()) >= 0 and self.textName.text() != "Username"):
-            # Attempt to login with the server
             login_handler = Login_Handler(self.textName.text(),self.textPass.text())
             self.data = login_handler.post('http://54.145.183.186/api/user')
 
+            ''' Check if the user was properly logged in. '''
             if self.data['userId'] == -1:
                 QtGui.QMessageBox.warning(self, 'Error', 'Login failed, please try again!')
             else:
-                print self.data
                 self.accept()
         else:
             QtGui.QMessageBox.warning(self, 'Error', 'Please enter your username and password!')

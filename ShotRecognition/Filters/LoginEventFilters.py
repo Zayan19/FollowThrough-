@@ -9,7 +9,7 @@ class UsernameEventFilter(QtCore.QObject):
                 widget.setText("")
         elif event.type() == QtCore.QEvent.FocusOut:
             if widget.text() == "":
-                widget.setText("gplukov@gmail.com")
+                widget.setText("Username")
         return False
 
 class PasswordEventFilter(QtCore.QObject):
@@ -17,9 +17,9 @@ class PasswordEventFilter(QtCore.QObject):
     def eventFilter(self, widget, event):
         # FocusOut event
         if event.type() == QtCore.QEvent.FocusIn:
-            if widget.text() == "testpass":
+            if widget.text() == "password":
                 widget.setText("")
         elif event.type() == QtCore.QEvent.FocusOut:
             if widget.text() == "":
-                widget.setText("testpass")
+                widget.setText("password")
         return False
