@@ -12,9 +12,9 @@ Goals of the Project: <br>
 The ultimate goal is to have this project be fully functioning at the end of the school year. Anything after that depends on the success of the project.
 
 Current Features: <br>
-    1. Both Haar cascade files and the Meanshift algorithm has been implemented to ensure flawless tracking <br>
-    2. All the hardware works in unison to ensure data is accurate <br>
-    3. The website interface is fully functioning. It's used as a portal so that users may review all of their data <br>
+&nbsp;&nbsp;1. Both Haar cascade files and the Meanshift algorithm has been implemented to ensure flawless tracking <br>
+&nbsp;&nbsp;2. All the hardware works in unison to ensure data is accurate <br>
+&nbsp;&nbsp;3. The website interface is fully functioning. It's used as a portal so that users may review all of their data <br>
 
 Disclaimer: <br>
 This project was made specifically for a capstone course which is done at McMaster University. The capstone course has been happening over the course of eight months, under the professor Wenbo He.
@@ -22,7 +22,7 @@ This project was made specifically for a capstone course which is done at McMast
 A Little Documentation: <br>
 A high level abstraction of the code can be found in the Doxygen folder.
 To view: <br>
-    1. Download corresponding folder for file. <br>
-    2. In the html folder, open index.html in a browser. <br>
-    
+&nbsp;&nbsp;1. Download corresponding folder for file. <br>
+&nbsp;&nbsp;2. In the html folder, open index.html in a browser. <br>
+
 Members: George Plukov, Philip Habib, Zayan Imtiaz, Djordje Petrovic
