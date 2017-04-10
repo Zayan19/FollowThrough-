@@ -1,0 +1,49 @@
+%*******************************************************
+% Main
+%*******************************************************
+\documentclass[
+  oneside,
+  11pt, a4paper,
+  footinclude=true,
+  headinclude=true,
+  cleardoublepage=empty
+]{scrbook}
+
+\usepackage{geometry}
+\usepackage[linedheaders,parts,pdfspacing]{classicthesis}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage{cancel}
+\usepackage{tikz}
+\usetikzlibrary{shapes.misc,shadows}
+\usepackage{setspace}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{svg}
+
+\usepackage{everyshi}
+\areaset[5mm]{400pt}{699pt}
+
+\geometry{lmargin=3cm,rmargin=3cm,bmargin=3cm,tmargin=3cm}
+
+
+
+\title{FollowThrough: Design Document - Revision 1}
+\author{
+  Djordje Petrovic\\ \texttt{1306258}\\ \texttt{petrod@mcmaster.ca} \and George Plukov\\ \texttt{1316246}\\ \texttt{plukovga@mcmaster.ca} \and Zayan Imtiaz\\ \texttt{1152665}\\ \texttt{imtiaz3@mcmaster.ca} \and Philip Habib \\ \texttt{1310455}\\ \texttt{habibp@mcmaster.ca}
+}
+
+\date{April 2017}
+
+\begin{document}
+
+\maketitle
+
+\include{pieces/contents}
+\include{pieces/architecture}
+\include{pieces/component}
+\include{img}
+
+\end{document}
