@@ -70,10 +70,9 @@ class Ball_Tracker(object):
         3. Computes end points of small line to check which direction the ball is moving.
         4. Computes angle between points.
         5. Computes the highest point reached.
-        6. Computes the highest point reached.
-        7. Continues to update the values frame by frame while the application is still running.
-        8. Returns the entry Angle, maximum ball height and exit angle if found.
-        9. Displays the corresponding values on screen.
+        6. Continues to update the values frame by frame while the application is still running.
+        7. Returns the entry Angle, maximum ball height and exit angle if found.
+        8. Displays the corresponding values on screen.
         """
 
         exitAngle = 0
