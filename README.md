@@ -1,4 +1,6 @@
-<img src="\ShotRecognition\resources\followthrough_logo.png" width="350"/>
+<p align="center">
+    <img src="\ShotRecognition\resources\followthrough_logo.png" width="350"/>
+</p>
 
 The Issue:
 There currently does not exist an affordable option for those who want professional help to up their game in Basketball. If people want to hire a coach it, not only does it cost a lot of money, but scheduling your day quickly becomes a hassle.
