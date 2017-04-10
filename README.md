@@ -1,13 +1,28 @@
-# FollowThrough-
-This is our Capstone project. 
+<p align="center">
+    <img src="\ShotRecognition\resources\followthrough_logo.png" width="350"/>
+</p>
 
-Description: A basketball web app that uses image processing to analyse the player's shot, tracks scoring statistics and helps improve shot form. The device will provide feedback in real time to the player using the device.
+The Issue:
+There currently does not exist an affordable option for those who want professional help to up their game in Basketball. If people want to hire a coach it, not only does it cost a lot of money, but scheduling your day quickly becomes a hassle.
 
-Supporting documentation can be found in the Final Documents folder. 
+The Solution:
+Our product is a virtual Basketball coach that you can bring with you to the court whenever you want, without the hefty costs of a personal trainer. You can use it on the court to receive real time feedback, then save the data you gathered to a cloud based server so you can review it later at your convenience. The product is very simple to set up and use, and will cost you very little.
 
+Goals of the Project:
+The ultimate goal is to have this project be fully functioning at the end of the school year. Anything after that depends on the success of the project.
+
+Current Features:
+    1. Both Haar cascade files and the Meanshift algorithm has been implemented to ensure flawless tracking
+    2. All the hardware works in unison to ensure data is accurate
+    3. The website interface is fully functioning. It's used as a portal so that users may review all of their data
+
+Disclaimer:
+This project was made specifically for a capstone course which is done at McMaster University. The capstone course has been happening over the course of eight months, under the professor Wenbo He.
+
+A Little Documentation:
 A high level abstraction of the code can be found in the Doxygen folder.
 To view:
     1. Download corresponding folder for file.
     2. In the html folder, open index.html in a browser.
 
-Members: George Plukov, Philip Habib, Zayan Imtiaz, Djordje Petrovic 
+Members: George Plukov, Philip Habib, Zayan Imtiaz, Djordje Petrovic
