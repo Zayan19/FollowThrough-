@@ -1,12 +1,45 @@
 import sys
+import math
 sys.path.append('/usr/local/lib/python2.7/site-packages')
 import cv2
 import numpy as np
-from collections import deque
 from managers import WindowManager, CaptureManager
 from Ball_Detector import Ball_Detector
+from collections import deque
+
+def direction2(x,y,x2,y2,directionCheck):
+    if (directionCheck =="upright"):
+        if (x2<x and y2<y):
+            return True
+
+
+    if (directionCheck =="downright"):
+        if (x2<x and y2>y):
+            return True
+
+    if (directionCheck =="upleft"):
+        if (x2>x and y2<y):
+            return True
+
+    if (directionCheck =="downleft"):
+        if (x2>x and y2>y):
+            return True
+    return False
+
+
+def angle(cx, cy, ex, ey) :
+    dy = ey - cy;
+    dx = ex - cx;
+    global theta
+    theta = math.atan2(dy, dx);
+    # // range (-PI, PI]
+    theta *= (180 / math.pi);
+    theta = abs(theta)
+    # theta=180-theta
+    return int(round(theta))
 
 class Ball_Tracker(object):
+
 
     def __init__(self, windowName, capture):
         self._windowManager = WindowManager(windowName, self.onKeypress)
@@ -18,11 +51,27 @@ class Ball_Tracker(object):
         self.orangeLower = (0,96,91)
         self.orangeUpper = (7,255,255)
 
+    def run(self):
+
+        exitAngle = 0
+        entryAngle =0
+        upRight=0
+        downRight=0
+
+
+        foundEntryAngle=False
+        foundExitAngle =False
+        #initialize maxX,maxY values which represent the apex of the ball arc
+        maxX=800
+        maxY=800
+
+        counter = 50
+
+        xCoord2 = 0
+        yCoord2 = 0
         # define list of points
         self.points = deque(maxlen=32)
 
-
-    def run(self):
         self._windowManager.createWindow()
 
         # Find object coordinates using HaarCascade
@@ -63,6 +112,50 @@ class Ball_Tracker(object):
             ret, track_window = cv2.meanShift(back_project, track_window, term_crit)
             (x,y,w,h) = track_window
 
+            # Draw a rectangle around the ball
+            cv2.rectangle(frame, (x,y), (x+w, y+h), 255, 2)
+
+            #get the x and y coordinates of the ball
+            xCoord = x+x+w/2
+            yCoord = y+y+h/2
+
+            # print ("This is xCoord and yCoord",xCoord,yCoord)
+            # print ("This is xCoord2 and yCoord2",xCoord2,yCoord2)
+
+            counter-=1
+            if (counter==0):
+                counter = 50
+                xCoord2 = x+x+w/2
+                yCoord2 = y+y+h/2
+                # print("Updated")
+
+            if (direction2(xCoord2,yCoord2,xCoord,yCoord,"upright")==True):
+                # print("It's working!!!")
+                upRight+=1
+
+
+            if (upRight>5 and foundExitAngle==False):
+                foundExitAngle=True
+                exitAngle=angle(xCoord,yCoord,2074,800)
+                print("The exit angle was",exitAngle)
+
+
+            if (direction2(xCoord,yCoord,xCoord2,yCoord2,"downright")==True):
+                # print("It's working!!!")
+                downRight+=1
+
+
+            if (downRight>5 and foundEntryAngle==False):
+                foundEntryAngle=True
+                entryAngle=angle(xCoord,yCoord,maxX,maxY)
+                print( "The entry angle was",entryAngle )
+                print( "The ball's max height was:",1000-maxY, "units." )
+
+            # Find the max height of the ball
+            if (maxY>yCoord):
+                maxY=y
+                maxX=x
+
             self.points.appendleft( (int(x+w/2), int(y+h/2)) )
 
             # Draw a rectangle around the ball
@@ -92,6 +185,9 @@ class Ball_Tracker(object):
     def _find_basketball(self):
         while True:
             entered = self._captureManager.enterFrame()
+            frame = self._captureManager.frame
+
+            track_window = self._ball_detector.find_object(frame)
 
             if not entered:
                 break
