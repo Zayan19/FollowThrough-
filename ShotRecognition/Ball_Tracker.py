@@ -169,6 +169,7 @@ class Ball_Tracker(object):
 
 
             if (downRight>5 and foundEntryAngle==False):
+                print( "The ball's max height was:",1000-maxY, "units." )
                 foundEntryAngle=True
                 entryAngle=angle(xCoord,yCoord,maxX,maxY)
                 print( "The entry angle was",entryAngle )
@@ -196,7 +197,6 @@ class Ball_Tracker(object):
             self._captureManager.frame = frame
 
             if (foundExitAngle):
-                print( "The ball's max height was:",1000-maxY, "units." )
                 cv2.putText(frame,"Entry angle was "+str(int(entryAngle))+" degrees!",(10,25),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
                 cv2.putText(frame,"Exit angle was "+str(int(exitAngle))+" degrees!",(10,75),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
                 cv2.putText(frame,"Max height was "+str((1000-maxY)/float(200))+" M!",(10,125),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
