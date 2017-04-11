@@ -6,6 +6,7 @@ from collections import deque
 from managers import WindowManager, CaptureManager
 from Ball_Detector import Ball_Detector
 
+
 class Ball_Tracker(object):
 
     def __init__(self, windowName, capture):
@@ -62,16 +63,16 @@ class Ball_Tracker(object):
 
             # Draw a rectangle around the ball
             cv2.rectangle(frame, (x,y), (x+w, y+h), 255, 2)
-            for i in xrange(1, len(self.points)):
-        		# if either of the tracked points are None, ignore
-        		# them
-        		if pts[i - 1] is None or pts[i] is None:
+            for i in range(1, len(self.points)):
+        		# if either of the tracked points are None, ignore # them
+                if self.points[i - 1] is None or self.points[i] is None:
         			continue
 
         		# otherwise, compute the thickness of the line and
-        		# draw the connecting lines
-        		# thickness = int(np.sqrt(args["buffer"] / float(i + 1)) * 2.5)
-        		cv2.line(frame, self.points[i - 1], self.points[i], (0, 0, 255), 1)
+                # draw the connecting lines
+                thickness = int(np.sqrt(32 / float(i + 1)) * 2.5)
+                cv2.line(frame, self.points[i - 1], self.points[i], (0, 0, 255), 1)
+
             # Set the frame to be displayed
             self._captureManager.frame = frame
 
