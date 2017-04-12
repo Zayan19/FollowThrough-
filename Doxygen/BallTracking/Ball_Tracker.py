@@ -44,7 +44,6 @@ def angle(cx, cy, ex, ey) :
     # theta=180-theta
     return int(round(theta))
 
-
 class Ball_Tracker(object):
 
 
@@ -170,7 +169,6 @@ class Ball_Tracker(object):
 
 
             if (downRight>5 and foundEntryAngle==False):
-                print( "The ball's max height was:",1000-maxY, "units." )
                 foundEntryAngle=True
                 entryAngle=angle(xCoord,yCoord,maxX,maxY)
                 print( "The entry angle was",entryAngle )
@@ -185,21 +183,20 @@ class Ball_Tracker(object):
             # Draw a rectangle around the ball
             cv2.rectangle(frame, (x,y), (x+w, y+h), 255, 2)
             for i in range(1, len(self.points)):
-
-        		# if either of the tracked points are None, ignore # them
+                # if either of the tracked points are None, ignore
+                # them
                 if self.points[i - 1] is None or self.points[i] is None:
-        			continue
-
-        		# otherwise, compute the thickness of the line and
+                    continue
+                # otherwise, compute the thickness of the line and
                 # draw the connecting lines
                 thickness = int(np.sqrt(32 / float(i + 1)) * 2.5)
-                cv2.line(frame, self.points[i - 1], self.points[i], (0, 0, 255), 1)
-
+                cv2.line(frame, self.points[i - 1], self.points[i], (0, 0, 255), thickness)
 
             # Set the frame to be displayed
             self._captureManager.frame = frame
 
             if (foundExitAngle):
+                print( "The ball's max height was:",1000-maxY, "units." )
                 cv2.putText(frame,"Entry angle was "+str(int(entryAngle))+" degrees!",(10,25),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
                 cv2.putText(frame,"Exit angle was "+str(int(exitAngle))+" degrees!",(10,75),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
                 cv2.putText(frame,"Max height was "+str((1000-maxY)/float(200))+" M!",(10,125),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)

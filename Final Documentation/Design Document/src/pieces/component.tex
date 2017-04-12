@@ -1,0 +1,148 @@
+%*******************************************************
+% Component Design
+%*******************************************************
+\pdfbookmark[1]{Component Design}{Component Design}
+\chapter{Component Design}
+
+\section{Introduction}
+
+\subsection{Terms Used}
+\begin{table}[h!]
+  \centering
+  \caption{Terms Used}
+  \label{tab:table7}
+  \begin{tabular}{ccc}
+    \toprule
+    Term & Description\\
+    \midrule
+    FollowThrough & The name of the product.\\
+    Arduino & The processor for the hardware used.\\
+    Form & Refers to the user's shot form in Basketball.\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Tables Used}
+\begin{table}[h!]
+  \centering
+  \caption{List of Tables}
+  \label{tab:table8}
+  \begin{tabular}{ccc}
+    \toprule
+    Number & Name\\
+    \midrule
+    7 & Terms Used\\
+    8 & List of Tables\\
+    9 & API Route\\
+    10 & Angle Function\\
+    11 & Haar Cascades\\
+    12 & Mean Shift\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Technologies and Languages}
+This product is developed using OpenCV for all of it's tracking. The language used for OpenCV is Python. Most of the development will be done here. The language for the online interface has not been chosen yet but it would likely be HTML/JavaScript/PHP.
+
+The hardware for this product will mostly be on the user's laptop. This is mostly for the tracking, as to reduce the costs for the product the user only needs to use a simple web cam. Any additional hardware, such as for tracking score, will be done with an Arduino.
+
+
+\section{API}
+\subsection{Overview}
+The web API provides the hardware and openCV applications the ability to store user data and track statistics over a long term. This provides a line of communication for the three separate applications and the SQL database which stores all user data. The API also provides all the user data for the front end of the web application.
+\subsection{API Outline}
+\begin{table}[h!]
+  \centering
+  \caption{API Route}
+  \label{tab:table9}
+  \begin{tabular}{ccc}
+    \toprule
+    URL & Method & Purpose\\
+    \midrule
+    /api/shot/\{user.id\} & PUT & Insert shot info provided by python \\
+    & & into database for user with specified user_id. \\ 
+    
+    /api/make/\{user.id\} & UPDATE & Update shotMade field for last shot taken by\\ 
+    & & user with id, user_id. \\
+    
+    /api/Users/ & GET, PUT, & Add, edit or retrieve information about a user.\\
+    & DEL & \\
+    
+    /api/Users/shots/ & GET & Retrieve a JSON \\ 
+    & & object containing all user \\
+    & & shots taken (made and missed)\\
+    /api/Users/shots/\{var\}/ & GET & Retrieve a JSON object containing all\\
+    & & user shots taken (made and missed)\\
+    & & based on a parameter\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Key Algorithms}
+OpenCV has countless built in algorithms to perform various tasks. Aside from those we implemented an angle algorithm. We also plan on implementing Haar Cascades as well as a Mean Shift Algorithm to further improve the program's ball tracking capabilities.  As of right now, the program only uses colour detection for tracking the ball. This has issues such as other similar colours and lighting interfering with the computations so these two algorithms when implemented will rectify these issues. 
+
+\section{Algorithm 1 - Angle Calculation}
+Given two points, it computes the angle between them and returns it. This is utilised after the ball reaches maximum height. This is because we want to compute the angle from the maximum height to when it starts descending as well as finally landing in or near the basket. There is an ideal angle contingent on a person's height the shot should form before hitting the basket and thus it is important that our program calculates this correctly and efficiently in order to give the user sufficient feedback. 
+
+\subsection{MIS Chart - Angle Calculation}
+\begin{table}[h!]
+  \centering
+  \caption{Angle Function}
+  \label{tab:table10}
+  \begin{tabular}{ccc}
+    \toprule
+    Function Name & Inputs & Output\\
+    \midrule
+    angle & coordinates of two points: x1,y1,x2,y2 & Angle(in degrees)\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Likely Changes}
+The angle computed right now does not account for the height of the user. Research indicates the ideal angle will vary by height so the algorithm should also take height into account in the future. 
+
+\section{Algorithm 2 - Haar Cascades}
+This is a machine learning algorithm we plan to implement in our program in order to improve object tracking. In basic terms the algorithm requires a large amount of positive images (images with a basketball) and negative images (images without a basketball) to analyse. From these images it extracts features from the positive images and tries to detect the distinct the features of the positive image, in our case a basketball being present. These features can include edges, lines and shapes. Note that because this is a machine learning algorithm, it would only have to be run once. Once it obtains sufficient data, this state will be stored and it will be simply implemented alongside the currently working program. 
+
+
+\subsection{MIS Chart - Haar Cascades}
+\begin{table}[h!]
+  \centering
+  \caption{Haar Cascades}
+  \label{tab:table11}
+  \begin{tabular}{ccc}
+    \toprule
+    Function Name & Inputs & Output\\
+    \midrule
+    haarCascade & array of positive images, array of & State file which detects\\
+     & negative images & positive images\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Likely Changes}
+Haar Cascades look for all kinds of features to distinguish images but in reality, only a few features will likely be needed as a basketball is a relatively simple object. Regardless of that fact it does account for lighting and a few other features that other algorithms can't. For this reason we will likely be putting this method into motion, but the changes that can be done to Haar cascade files is naturally limited.
+
+\section{Algorithm 3 - Mean Shift Algorithm}
+This algorithm given a specific window size simply detects the part of an image with the most amount of pixel density within that given window size. For instance if the image is a blank canvas with scattered dots and a circular window is specified, it will attempt to move that circle to the object with the highest concentration of dots. The plan is to implement this algorithm so our program is not only detecting colour but also the pixel density of a basketball.  Normally the program relies on no other colour being present in the scene that is too similar to the basketball colour. But once this is implemented, even if there is another object on screen with the exact same colour values, it would also need a similar pixel density to interfere with the program. Hence, this greatly reduces the chances of interference from surroundings during image recognition since there are two checks occurring, not just one.
+
+\subsection{MIS Chart - Mean Shift}
+\begin{table}[h!]
+  \centering
+  \caption{Mean Shift}
+  \label{tab:table12}
+  \begin{tabular}{ccc}
+    \toprule
+    Function Name & Inputs & Output\\
+    \midrule
+    meanShift & specified detection window size & object with highest pixel density\\
+     & and shape & (basketball)\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Likely Changes}
+It is still unclear if the basketball will have the highest pixel density on screen. It is possible this is not true in which case the algorithm will have to be slightly modified to detect a known range of pixel densities that basketballs generally have. 
+
+\section{Additional Comments}
+The next implementation will include more in depth tracking algorithms and more development on the web site front of the product. A revised demonstration is the next thing on the list where we will detail a large step we have taken towards the development of FollowThrough.

@@ -61,9 +61,6 @@ class PositionSelectorWindow(QtGui.QDialog):
                 return 6
 
 
-
-
-
 class BasketballLabel(QtGui.QLabel):
 
     def __init__(self, parent=None, startingPosition=QtCore.QPoint(100,100), radius=10):

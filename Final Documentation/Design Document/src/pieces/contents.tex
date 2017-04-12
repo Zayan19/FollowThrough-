@@ -1,0 +1,25 @@
+%*******************************************************
+% Table of Contents
+%*******************************************************
+\pdfbookmark[1]{\contentsname}{tableofcontents}
+
+\setcounter{tocdepth}{2} % <-- 2 includes up to subsections in the ToC
+\setcounter{secnumdepth}{3} % <-- 3 numbers up to subsubsections
+
+\tableofcontents 
+
+\subsection{Revision Chart}
+\begin{table}[h!]
+  \centering
+  \caption{Revision Chart}
+  \label{tab:table1}
+  \begin{tabular}{ccc}
+    \toprule
+    Revision Number & Revision Date & Description\\
+    \midrule
+    1 & January 6th 2017 & Starting the document.\\
+    2 & January 10th 2017 & Updating large amounts of components.\\
+    3 & January 11th 2017 & Finishing touches for revision 0.\\
+    \bottomrule
+  \end{tabular}
+\end{table}
