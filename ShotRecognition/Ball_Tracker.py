@@ -57,7 +57,7 @@ class Ball_Tracker(object):
         self._windowManager = WindowManager(windowName, self.onKeypress)
         self._captureManager = CaptureManager(capture, self._windowManager, False)
         self._ball_detector = Ball_Detector("ball_classifier.xml")
-self._paused = False
+        self._paused = False
         # define a geneal orange color to help with detection
         self.orangeLower = (0,96,91)
         self.orangeUpper = (7,255,255)

@@ -125,7 +125,7 @@ class Window(QtGui.QMainWindow):
             stats = Ball_Tracker('Ball Tracker', cv2.VideoCapture(str(filename))).run()
 
         # Post the shot that was just made
-        poster = Shot_Handler(entryAngle, exitAngle, maxHeight)
+        poster = Shot_Handler(stats[0], stats[1], stats[2])
         self.user.getId()
         poster.set_user_id(self.user.getId())
         poster.set_zone(self.zone)
