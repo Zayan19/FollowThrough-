@@ -57,6 +57,8 @@ class Window(QtGui.QMainWindow):
         self.pixmap = QtGui.QPixmap('resources/followthrough_logo.png')
         label.setPixmap(self.pixmap)
 
+        self.zone = 1
+
 
         self.login_button = QtGui.QPushButton('Login')
         self.login_button.clicked.connect(self.click_login)
@@ -109,17 +111,25 @@ class Window(QtGui.QMainWindow):
         if position_selector.exec_():   # here dialog will be shown and main script will wait for its closing (with no errors)
             # self.user.login(login.data['userId'])
             # self.update_button_state()
-            pass
+            self.zone = position_selector.zone
         else:
             print ("error closing")
 
     def click_capture_video(self):
-        pass
+        Ball_Tracker('Ball Tracker', cv2.VideoCapture(0)).run()
+
     def click_load_video(self):
         filename = QtGui.QFileDialog.getOpenFileName()
-        print filename
+        stats = []
         if filename:
-            Ball_Tracker('Ball Tracker', cv2.VideoCapture(str(filename))).run()
+            stats = Ball_Tracker('Ball Tracker', cv2.VideoCapture(str(filename))).run()
+
+        # Post the shot that was just made
+        poster = Shot_Handler(entryAngle, exitAngle, maxHeight)
+        self.user.getId()
+        poster.set_user_id(self.user.getId())
+        poster.set_zone(self.zone)
+        poster.post('http://54.145.183.186/api/shot')
 
 
     def click_logout(self):

@@ -1,11 +1,12 @@
+import cv2
 import sys
 import math
 sys.path.append('/usr/local/lib/python2.7/site-packages')
-import cv2
-import numpy as np
-from managers import WindowManager, CaptureManager
-from Ball_Detector import Ball_Detector
 from collections import deque
+import numpy as np
+from Ball_Detector import Ball_Detector
+from managers import WindowManager, CaptureManager
+from Networking import Shot_Handler 
 
 def direction2(x,y,x2,y2,directionCheck):
     """Direction function used to calculate which direction the ball is travelling.
@@ -54,10 +55,9 @@ class Ball_Tracker(object):
         Also initializes orangeLower and orangeUpper which is a range of orange values used to help with detection
         """
         self._windowManager = WindowManager(windowName, self.onKeypress)
-        self._captureManager = CaptureManager(capture, self._windowManager, True)
+        self._captureManager = CaptureManager(capture, self._windowManager, False)
         self._ball_detector = Ball_Detector("ball_classifier.xml")
-
-        self._paused = False
+self._paused = False
         # define a geneal orange color to help with detection
         self.orangeLower = (0,96,91)
         self.orangeUpper = (7,255,255)
@@ -78,6 +78,7 @@ class Ball_Tracker(object):
 
         exitAngle = 0
         entryAngle =0
+        maxHeight = 0
         upRight=0
         downRight=0
 
@@ -186,31 +187,38 @@ class Ball_Tracker(object):
             cv2.rectangle(frame, (x,y), (x+w, y+h), 255, 2)
             for i in range(1, len(self.points)):
 
-        		# if either of the tracked points are None, ignore # them
+            	# if either of the tracked points are None, ignore # them
                 if self.points[i - 1] is None or self.points[i] is None:
-        			continue
+                    continue
 
         		# otherwise, compute the thickness of the line and
                 # draw the connecting lines
                 thickness = int(np.sqrt(32 / float(i + 1)) * 2.5)
-                cv2.line(frame, self.points[i - 1], self.points[i], (0, 0, 255), 1)
+                cv2.line(frame, self.points[i - 1], self.points[i], (0, 0, 255), thickness)
 
 
             # Set the frame to be displayed
             self._captureManager.frame = frame
 
             if (foundExitAngle):
+                maxHeight = (1000 - maxY)/float(200)
                 cv2.putText(frame,"Entry angle was "+str(int(entryAngle))+" degrees!",(10,25),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
                 cv2.putText(frame,"Exit angle was "+str(int(exitAngle))+" degrees!",(10,75),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
-                cv2.putText(frame,"Max height was "+str((1000-maxY)/float(200))+" M!",(10,125),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
+                cv2.putText(frame,"Max height was "+str((maxHeight)/float(200))+" M!",(10,125),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
+                
             # Signal we are done with the frame, write to cv2.imshow
             self._captureManager.exitFrame()
 
             # Always listen for specific keypress events
             # Triggered by onKeypress(keycode)!
             self._windowManager.processEvents()
-            cv2.imshow("Frame", frame)
+        
+        stats = [entryAngle, exitAngle, maxHeight]
+        return stats
 
+
+
+            
 
     def _find_basketball(self):
         """
@@ -265,4 +273,5 @@ class Ball_Tracker(object):
 
 
 if __name__ == '__main__':
+   # Ball_Tracker('Ball Tracker', cv2.VideoCapture('test_videos/3P_make.MOV')).run()
    Ball_Tracker('Ball Tracker', cv2.VideoCapture('test_videos/3P_make.MOV')).run()

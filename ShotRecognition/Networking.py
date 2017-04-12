@@ -7,10 +7,11 @@ class Shot_Handler:
     def __init__(self, entry_angle, exit_angle, arc_height, zone = 0):
         self.entry_angle = entry_angle
         self.exit_angle = exit_angle
-        self.arc_height = arc_heigth
+        self.arc_height = arc_height
         self.zone = zone
 
         self.over_under = 'over' if arc_height > 4 else 'under'
+        self.made = True
         self.zone = None
         self.user_id = None
 
@@ -28,7 +29,7 @@ class Shot_Handler:
         data_to_post['entry_angle'] = self.entry_angle
         data_to_post['arc_height'] = self.arc_height
         data_to_post['made'] = self.made
-        data_to_post['time_of_shot'] = _format_datetime(datetime.now())
+        data_to_post['time_of_shot'] = self._format_datetime(datetime.now())
 
         url_values = urllib.urlencode(data_to_post)
 
@@ -46,7 +47,7 @@ class Shot_Handler:
     def set_zone(self, zone):
         self.zone = zone
 
-    def _format_datetime(date):
+    def _format_datetime(self, date):
         str_date = str(date)
         i = str_date.index('.')
         return str_date[:i]

@@ -206,3 +206,6 @@ class Ball_Tracker():
        self.theta = abs(self.theta)
        # self.theta=180-self.theta
        return self.theta
+
+if __name__=='__main__':
+    Ball_Tracker(False, 'test_videos/FT_make.MOV').begin_capture()
