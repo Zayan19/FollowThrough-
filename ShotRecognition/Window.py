@@ -12,6 +12,7 @@ from State import State
 from Login import LoginWindow
 from PositionSelector import PositionSelectorWindow
 from User import User
+from Networking import Shot_Handler
 
 
 
@@ -56,6 +57,7 @@ class Window(QtGui.QMainWindow):
         label = QtGui.QLabel()
         self.pixmap = QtGui.QPixmap('resources/followthrough_logo.png')
         label.setPixmap(self.pixmap)
+        label.setScaledContents(True)
 
         self.zone = 1
 
@@ -112,6 +114,7 @@ class Window(QtGui.QMainWindow):
             # self.user.login(login.data['userId'])
             # self.update_button_state()
             self.zone = position_selector.zone
+            print (self.zone)
         else:
             print ("error closing")
 
@@ -126,8 +129,8 @@ class Window(QtGui.QMainWindow):
 
         # Post the shot that was just made
         poster = Shot_Handler(stats[0], stats[1], stats[2])
-        self.user.getId()
-        poster.set_user_id(self.user.getId())
+        self.user.getCurrentUser()
+        poster.set_user_id(self.user.getCurrentUser())
         poster.set_zone(self.zone)
         poster.post('http://54.145.183.186/api/shot')
 

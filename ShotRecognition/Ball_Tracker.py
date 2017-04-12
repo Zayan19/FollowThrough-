@@ -6,7 +6,7 @@ from collections import deque
 import numpy as np
 from Ball_Detector import Ball_Detector
 from managers import WindowManager, CaptureManager
-from Networking import Shot_Handler 
+from Networking import Shot_Handler
 
 def direction2(x,y,x2,y2,directionCheck):
     """Direction function used to calculate which direction the ball is travelling.
@@ -204,21 +204,21 @@ class Ball_Tracker(object):
                 maxHeight = (1000 - maxY)/float(200)
                 cv2.putText(frame,"Entry angle was "+str(int(entryAngle))+" degrees!",(10,25),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
                 cv2.putText(frame,"Exit angle was "+str(int(exitAngle))+" degrees!",(10,75),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
-                cv2.putText(frame,"Max height was "+str((maxHeight)/float(200))+" M!",(10,125),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
-                
+                cv2.putText(frame,"Max height was "+str((1000-maxHeight)/200)+" M!",(10,125),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
+
             # Signal we are done with the frame, write to cv2.imshow
             self._captureManager.exitFrame()
 
             # Always listen for specific keypress events
             # Triggered by onKeypress(keycode)!
             self._windowManager.processEvents()
-        
+
         stats = [entryAngle, exitAngle, maxHeight]
         return stats
 
 
 
-            
+
 
     def _find_basketball(self):
         """
