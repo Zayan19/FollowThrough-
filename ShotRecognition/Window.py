@@ -77,7 +77,7 @@ class Window(QtGui.QMainWindow):
 
         self.buttons = [self.login_button, self.select_position, self.capture_video, self.logout_button,self.load_video]
 
-        self.user.login('5')
+        # self.user.login('5')
 
         self.update_button_state()
 
