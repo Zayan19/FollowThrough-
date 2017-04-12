@@ -1,9 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- Page to display if the user has no shots -->
+@if (is_null($shots))
+<div>
+    <h1 style="text-align: center; margin-top: 10%;"> Your account currently has no shots recorded </h1>
+    <h3 style="text-align: center"> Use the FollowThrough- python app to record shots. The will be shown here </h3>
+</div>
+    
+@else
+
 <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--1-col"></div>
     <div class="mdl-cell mdl-cell--4-col">
+
         <div class="avgStats">
             @foreach ($avgs[0] as $i=>$zone)
                 @if ($i == 0)
@@ -58,4 +68,5 @@
     </div>
 
 </div>
+@endif
 @endsection

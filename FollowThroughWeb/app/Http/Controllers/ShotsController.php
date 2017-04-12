@@ -20,12 +20,16 @@ class ShotsController extends Controller
         if (Auth::check()) {
             $user_id = Auth::user()->id;
             $shots = User::find($user_id)->shots;
-            $avgs = ShotsController::calcAvgs($shots);
+            
+            if ($shots->isEmpty()) {
+                return view('shots')->with('shots', NULL);
+            } else {
+                $avgs = ShotsController::calcAvgs($shots);
+                return view('shots')->with('shots', $shots)->with('avgs', $avgs);
+            }
 
-            return view('shots')->with('shots', $shots)->with('avgs', $avgs);
         } else {
-            //TODO: return a view styll
-            return response(array('error'=> $user_id),200);
+            return view('forbidden');
         }
     }
 
