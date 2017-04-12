@@ -184,7 +184,7 @@ def runVideo(stream, video_path=None):
         if (foundAngle):
             cv2.putText(frame,"Entry angle is "+str(int(entryAngle))+" degrees!",(10,25),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
             cv2.putText(frame,"Exit angle is "+str(int(exitAngle))+" degrees!",(10,75),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
-            cv2.putText(frame,"Max height was "+str(round(((250-maxY)/40),2))+" M!",(10,125),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
+            cv2.putText(frame,"Max height was "+str(round(((1000-maxY)/200),2))+" M!",(10,125),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),3,0)
 
         # loop over the set of tracked points
         for i in range(1, len(pts)):
